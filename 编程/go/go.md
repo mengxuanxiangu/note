@@ -1,0 +1,566 @@
+# go
+[toc]
+## 语法
+[toc]
+### 数组
+#### 数组定义
+```go
+var a [3]int   //3个int型的数组，初始值是3个0,数组“零值”状态
+arr:=[5]int{1,2,3,4,5}   //定义并初始化长度为5的数组
+var array2 = [...]int{6, 7, 8} //不声明长度
+q := [...] int {1,2,3} //不声明长度
+r := [...] int {99:-1}  //长度为100的数组，只有最后一个是-1，其他都是0
+```
+
+### map
+#### 定义
+```go
+    //声名再初始化
+    var m1 map[string]string
+    m1 = make(map[string]string)
+    m1["a"] = "aa"
+    
+    //直接创建
+    m2 := make(map[string]string)
+    m2["a"] = "aa"
+    
+    //创建并赋值
+    m3 := map[string]string{
+	    "a": "aa",
+	    "b": "bb",
+    }
+```
+#### 遍历
+```go
+arr := [5]int{5, 4, 3}
+
+for index, value := range arr {
+    fmt.Printf("arr[%d]=%d \n", index, value)
+}
+
+for index := 0; index < len(arr); index++ {
+    fmt.Printf("arr[%d]=%d \n", index, arr[index])
+}
+```
+
+### 引用
+#### 引用类型
+go 中五种引用类型有 slice， channel， function， map， interface
+
+### channel 
+#### 定义
+[link](http://colobu.com/2016/04/14/Golang-Channels/)
+```go
+aa := make(chan int) //无缓冲区
+bb := make(chan int, 100) //带缓冲区
+```
+
+### 循环
+#### for
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+    // 最基本的一种，单一条件循环
+    // 这个可以代替其他语言的while循环
+    i := 1
+    for i <= 3 {
+        fmt.Println(i)
+        i = i + 1
+    }
+
+    // 经典的循环条件初始化/条件判断/循环后条件变化
+    for j := 7; j <= 9; j++ {
+        fmt.Println(j)
+    }
+
+    // 无条件的for循环是死循环，除非你使用break跳出循环或者
+    // 使用return从函数返回
+    for {
+        fmt.Println("loop")
+        break
+    }
+}
+```
+### 匿名组合
+#### 初始化
+```go
+type Base struct {
+    Name string
+}
+
+type Child struct {
+    Name string
+    Base
+}
+
+func main() {
+    c := &Child{
+        Name: "Tom",
+        Base: Base{
+            Name: "Joey",
+        },
+    }
+}
+```
+
+#### 组合函数
+```go
+package main
+
+import "fmt"
+
+type Base struct {
+        Name string
+}
+
+type Child struct {
+        Name string
+        Base
+}
+
+func (b *Base) Hello() {
+        fmt.Println("Hello ", b.Name)
+}
+
+func (b *Base) Who() {
+        fmt.Println("I'm base")
+}
+
+func (c *Child) Who() {
+        fmt.Println("I'm child")
+}
+
+func main() {
+        c := &Child{
+                Name: "Tom",
+                Base: Base{
+                        Name: "Joey",
+                },
+        }
+        //若外部与内部有相同函数，默认用外部
+        fmt.Println("====run c.Who()=========")
+        c.Who() 
+        fmt.Println("========================")
+        //可使用类名强制调用内部，但内部函数只能访问内部变量
+        fmt.Println("====run c.Base.Who()====")
+        c.Base.Who()
+        fmt.Println("========================")
+        //外部继承内部的函数，但内部函数只能访问内部变量
+        fmt.Println("====run c.Hello()=======")
+        c.Hello()
+        fmt.Println("========================")
+        fmt.Println("====run c.Base.Hello()==")
+        c.Base.Hello()
+        fmt.Println("========================")
+}
+```
+##### 执行结果
+```
+====run c.Who()=========
+I'm child
+========================
+====run c.Base.Who()====
+I'm base
+========================
+====run c.Hello()=======
+Hello  Joey
+========================
+====run c.Base.Hello()==
+Hello  Joey
+========================
+```
+## 格式转换
+### 字符串转int
+```go
+import "strconv"
+request.STimestamp, _ = strconv.ParseInt(req.Form["start"][0], 10, 64)
+```
+### 时间戳与时间互转
+```go
+//时间戳转时间
+var startTime int64
+timeS := time.Unix(startTime, 0)
+date := timeS.Format("2006-01-02 15:04:05")
+//时间转时间戳
+now :=time.Now()
+timestamp:= now.Unix()
+```
+### float64转int
+```go
+    var x float64 = 5.7
+    var y int = int(x)
+```
+### float64转string
+```go
+    strconv.FormatFloat(capacity, 'f', 1, 64)
+```
+## os
+
+### 判断目录或文件是否存在
+```go
+import os
+func PathExist(path string) bool {
+    _, err := os.Stat(path)
+    if err != nil && os.IsNotExist(err) {
+        return false
+    }
+    return true
+}
+```
+### 创建目录
+```go
+dir="./haha"
+err := os.Mkdir(dir, os.ModePerm)
+if err != nil {
+    fmt.Printf("mkdir failed![%v]\n", err)
+} else {
+    fmt.Printf("mkdir success!\n")
+}
+```
+### 写文件
+如果文件不存在则自动创建，如果存在则清空写
+```go
+func Write1()  {
+    fileName := "file/test2"
+    strTest := "测试测试"
+    var d = []byte(strTest)
+    err := ioutil.WriteFile(fileName, d, 0666)
+    if err != nil {
+        fmt.Println("write fail")
+    }
+    fmt.Println("write success")
+}
+```
+### 读文件
+```go
+func Read0()  (string){
+    f, err := ioutil.ReadFile("file/test")
+    if err != nil {
+        fmt.Println("read fail", err)
+    }
+    return string(f)
+}
+```
+### 获取当前主机名
+```go
+host, err := os.Hostname()
+if err != nil {
+    fmt.Printf("%s", err)
+} else {
+    fmt.Printf("%s", host)
+}
+```
+## bytes.Buffer
+
+### 声明一个Buffer的四种方法：
+```go
+var b bytes.Buffer       //直接定义一个Buffer变量，不用初始化，可以直接使用
+b := new(bytes.Buffer)   //使用New返回Buffer变量
+b := bytes.NewBuffer(s []byte)   //从一个[]byte切片，构造一个Buffer
+b := bytes.NewBufferString(s string)   //从一个string变量，构造一个Buffer
+```
+### 往Buffer中写入数据
+```go
+b.Write(d []byte)        //将切片d写入Buffer尾部
+b.WriteString(s string)  //将字符串s写入Buffer尾部
+b.WriteByte(c byte)     //将字符c写入Buffer尾部
+b.WriteRune(r rune)     //将一个rune类型的数据放到缓冲器的尾部
+b.WriteTo(w io.Writer)  //将Buffer中的内容输出到实现了io.Writer接口的可写入对象中
+```
+注：将文件中的内容写入Buffer,则使用ReadForm(i io.Reader)
+
+
+### 从Buffer中读取数据到指定容器
+```go
+c := make([]byte,8)
+b.Read(c)      //一次读取8个byte到c容器中，每次读取新的8个byte覆盖c中原来的内容
+b.ReadByte()   //读取第一个byte，b的第1个byte被拿掉，赋值给a => a, _ := b.ReadByte()
+
+b.ReadRune()   //读取第一个rune，b的第1个rune被拿掉，赋值给r => r, _ := b.ReadRune()
+b.ReadBytes(delimiter byte)   //需要一个byte作为分隔符，读的时候从缓冲器里找第一个出现的分隔符（delim），找到后，把从缓冲器头部开始到分隔符之间的所有byte进行返回，作为byte类型的slice，返回后，缓冲器也会空掉一部分
+b.ReadString(delimiter byte)  //需要一个byte作为分隔符，读的时候从缓冲器里找第一个出现的分隔符（delim），找到后，把从缓冲器头部开始到分隔符之间的所有byte进行返回，作为字符串返回，返回后，缓冲器也会空掉一部分
+b.ReadForm(i io.Reader)  //从一个实现io.Reader接口的r，把r里的内容读到缓冲器里，n 返回读的数量
+    file, _ := os.Open("./text.txt")    
+buf := bytes.NewBufferString("Hello world")    
+buf.ReadFrom(file)              //将text.txt内容追加到缓冲器的尾部    
+fmt.Println(buf.String())
+```
+### 清空数据
+b.Reset()
+
+### 字符串化
+b.String()
+## runtime
+#### SetFinalizer
+```golang
+runtime.SetFinalizer(obj, func(obj *typeObj))
+```
+func(obj *typeObj) 需要一个 typeObj 类型的指针参数 obj，特殊操作会在它上面执行。func 也可以是一个匿名函数。
+
+对象在被GC前，调用该函数
+## 字符串
+
+##字符串截取
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	fmt.Print(strings.Trim("¡¡¡Hello, Gophers!!!", "!¡"))
+}
+```
+### 数组转字符串
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	s := []string{"foo", "bar", "baz"}
+	fmt.Println(strings.Join(s, ", "))
+}
+```
+### 字符串分隔
+```go
+import "strings"
+
+strings.Split(alert.alertInterval, SPILITTER)
+```
+## reflect
+
+### 示例
+```go
+  func CalAttrWeight(capacity interface{}, attrArr []string) {
+      var ref reflect.Value
+      switch capacity.(type) {
+      case *BCCapacityInfo:
+          ref = reflect.ValueOf(*capacity.(*BCCapacityInfo))
+      case *BSCapacityInfo:
+          ref = reflect.ValueOf(*capacity.(*BSCapacityInfo))
+      }
+      for _, str := range attrArr {
+          attrValue := ref.FieldByName(str).Interface()
+          switch attrValue.(type) {
+          case map[string][]*InstsRealUsedInfo:
+              value := attrValue.(map[string][]*InstsRealUsedInfo)
+              InstsRealUsedInfoWeightUnit(value)
+          }
+      }
+
+  }
+```
+注意：
+
+    reflect.ValueOf()传入的一定要是对象，如果是指针，那么在ref.FieldByName时会报错。 
+    原因是指针的ValueOf返回的是指针的Type，它是没有Field的，所以也就不能使用FieldByName
+    
+### 根据类名创建对象
+```go
+
+type ModuleFactory struct {
+        moduleTypeMap map[string]reflect.Type
+}
+
+func (factory *ModuleFactory) Init() error {
+        factory.moduleTypeMap = make(map[string]reflect.Type)
+        factory.moduleTypeMap["BaseModule"] = reflect.TypeOf(BaseModule{})
+        return nil
+}
+
+func (factory *ModuleFactory) GetModule(moduleName string) (Module, error) {
+        if m, exist := factory.moduleTypeMap[moduleName]; exist {
+                v := reflect.New(m).Elem().Addr().Interface()
+                fmt.Println(reflect.TypeOf(v))
+                return v.(Module), nil
+        }
+        return nil, fmt.Errorf("moduleName[%v] not found", moduleName)
+}
+```
+注意：
+>     Value.Addr()是获取这个 value 的指针。用于通过返射获取一个 struct 对象的指针，如果要获取的是 struct 对象，则不需要
+
+## datetime
+### 转换
+```golang
+//时间戳转时间格式
+time.Unix(timestamp, 0).Format("2006010203")
+
+//时间格式转换时间戳
+func TimeToTimestamp(layout,timestr string) (int64, error) {
+    loc, err := time.LoadLocation("Local")
+    if err != nil {
+        return -1, err
+    }
+    times, err := time.ParseInLocation(layout, timestr, loc)
+    if err != nil {
+        return -1, err
+    }
+    trantimestamp := times.Unix()
+    return trantimestamp, nil
+}
+
+//时间加减
+end := time.Now()
+duration := time.ParseDuration("-168h") //"ms", "s", "m", "h"
+start := end.Add(duration)//7天前
+
+//判断一个时间点是否在一个时间点之后
+    stringToTime, _ := time.Parse("2006-01-02 15:04:05", "2017-12-12 12:00:00")
+    beforeOrAfter := stringToTime.After(time.Now())
+    if beforeOrAfter == true {
+        fmt.Println("2017-12-12 12:00:00在tNow之后!")
+    } else {
+        fmt.Println("2017-12-12 12:00:00在tNow之前!")
+    }
+    
+//判断一个时间相比另外一个时间点过去了多久
+    beginTime :=time.Now()
+    time.Sleep(time.Second*1)
+    durtime:= time.Since(beginTime)
+    fmt.Println("离现在过去了：",durtime)
+```
+### sleep
+```go
+time.Sleep(time.Duration(m.interval) * time.Millisecond) //sleep一段时间
+```
+## json
+
+### 基础标记
+```go
+type Span struct {
+	Qid            string  `json:"Q,omitempty"`
+	IpPort         string  `json:"I"`
+	BeginTimestamp uint64  `json:"B"`
+	EndTimestamp   uint64  `json:"-"`
+	Children       []*Span `json:"C,omitempty"`
+```
+其中omitempty 语义为，若该字段为空，则不输出
+其中-语义为，该字段不输出
+
+### 序列化与反序列化
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
+
+func main() {
+	type ColorGroup struct {
+		ID     int
+		Name   string
+		Colors []string
+	}
+	group := ColorGroup{
+		ID:     1,
+		Name:   "Reds",
+		Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+	}
+	b, err := json.Marshal(group)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	os.Stdout.Write(b)
+}
+```
+## 协程间通信
+
+### waitgroup
+```go
+package main
+ 
+import (
+	"fmt"
+	"sync"
+)
+ 
+var waitgroup sync.WaitGroup
+ 
+func test(shownum int) {
+	fmt.Println(shownum)
+	waitgroup.Done() //任务完成，将任务队列中的任务数量-1，其实.Done就是.Add(-1)
+}
+ 
+func main() {
+	for i := 0; i < 10; i++ {
+		waitgroup.Add(1) //每创建一个goroutine，就把任务队列中任务的数量+1
+		go test(i)
+	}
+	waitgroup.Wait() //.Wait()这里会发生阻塞，直到队列中所有的任务结束就会解除阻塞
+	fmt.Println("done!")
+}
+```
+## 文件读取
+### io/ioutil
+```go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"log"
+)
+
+func main() {
+	content, err := ioutil.ReadFile("testdata/hello")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("File contents: %s", content)
+
+}
+```
+## go test
+### 测试单个文件
+```bash
+go test -v  wechat_test.go wechat.go
+```
+一定要带上原文件
+### 测试单个函数
+```bash
+go test -v -test.run TestRefreshAccessToken
+```
+## 获取map所有值
+```go
+  func GetValues(infoMap map[string]*CallgraphOrderedInfo) []*CallgraphOrderedInfo {
+      if infoMap == nil {
+          return nil
+      }
+      arr := make([]*CallgraphOrderedInfo, 0, len(infoMap))
+      for _, info := range infoMap {
+          arr = append(arr, info)
+      }
+      return arr
+  }
+```
+### SetFinalizer
+用于在指定对象被析构前执行指定操作
+``` go
+func NewPostgresDB(config *conf.PostgresConfig) *PostgresDB {
+    db := &PostgresDB{
+        hostIp:     config.HostIP,
+        dbUserName: config.DBUserName,
+        dbPassword: config.DBPasswd,
+        dbName:     config.DBName,
+        tableName:  config.TableName,
+        inited:     false,
+    }
+    db.Connection()
+    runtime.SetFinalizer(db, (*PostgresDB).Close)
+    return db
+}
+```

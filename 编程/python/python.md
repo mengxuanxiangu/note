@@ -1,0 +1,90 @@
+[toc]
+# md5 计算
+``` python
+import hashlib
+import sys
+
+if __name__ == '__main__':
+    if len(sys.argv)!= 2:
+        sys.exit('argv error!')
+
+    m = hashlib.md5()
+    n = 1024*4
+    inp = open(sys.argv[1],'rb')
+    while True:
+        buf = inp.read(n)
+        if buf:
+            m.update(buf)
+        else:
+            break
+    print m.hexdigest()
+```
+
+# 进制转换
+## int 转 二进制
+``` python
+    b = bin(32768).replace("0b", "")
+```
+# datetime
+## 获取当前时间
+```python
+import datetime
+nowTime=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')#现在
+pastTime = (datetime.datetime.now()-datetime.timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S')#过去一小时时间
+afterTomorrowTime = (datetime.datetime.now()+datetime.timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S')#后天
+tomorrowTime = (datetime.datetime.now()+datetime.timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')#明天
+```
+## string 转时间
+``` python
+import datetime
+detester = ‘2017-01-01'
+date = datetime.datetime.strptime(detester, '%Y-%m-%d')
+```
+## 时间转 string
+``` python
+import datetime
+date = datetime.now()
+detester = date.strftime(‘%Y-%m-%d')
+```
+# string
+## 数组转字符串
+
+```python
+arr = [1, 2, 3]
+print ",".join(arr)
+```
+# logging
+[toc]
+## 日志切割
+使用TimedRotatingFileHandler
+```python
+    logger = logging.getLogger('record')
+    logger.setLevel(level)
+    recordFormat = "%(message)s"
+    recordFormatter = logging.Formatter(recordFormat)
+    handler = logging.handlers.TimedRotatingFileHandler(log_path + "record.log", when='S', backupCount=4)
+    handler.suffix = "%Y%m%d%H%S"
+    handler.setFormatter(recordFormatter)
+    logger.addHandler(handler)
+```
+## 设置日志日期后缀
+```python
+    handler.suffix = "%Y%m%d%H%S"
+```
+
+## 设置日志内容
+```python
+format="%(levelname)s: %(asctime)s.%(msecs)d: %(module)s * %(thread)d %(message)s <%(filename)s:%(lineno)d>"
+```
+# 命令行解析
+[toc]
+## 格式
+```python
+import argparse
+parser = argparse.ArgumentParser(description='adjust bs app quota')
+parser.add_argument('-c', '--cluster', required = True, help = 'the cluster')
+parser.add_argument('-p', '--percent', required = False, action = 'store_true',help = 'use percent or absolute value')
+args = parser.parse_args()
+```
+## 无值参数
+只要添加action = 'store_true'
