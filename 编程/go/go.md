@@ -1,7 +1,7 @@
 # go
-[toc]
+
+[TOC]
 ## 语法
-[toc]
 ### 数组
 #### 数组定义
 ```go
@@ -364,7 +364,7 @@ strings.Split(alert.alertInterval, SPILITTER)
 
     reflect.ValueOf()传入的一定要是对象，如果是指针，那么在ref.FieldByName时会报错。 
     原因是指针的ValueOf返回的是指针的Type，它是没有Field的，所以也就不能使用FieldByName
-    
+
 ### 根据类名创建对象
 ```go
 
@@ -505,6 +505,7 @@ func main() {
 ```
 ## 文件读取
 ### io/ioutil
+
 ```go
 package main
 
@@ -524,7 +525,28 @@ func main() {
 
 }
 ```
+#### 遍历目录下所有文件
+
+```go
+func GetFiles(dirPath string) (files []string, err error) {
+        dir, err := ioutil.ReadDir(dirPath)
+        if err != nil {
+                return nil, err
+        }
+        for _, file := range dir {
+                if file.IsDir() {
+                        continue
+                }
+                files = append(files, file.Name())
+        }
+        return files, err
+}
+```
+
+
+
 ## go test
+
 ### 测试单个文件
 ```bash
 go test -v  wechat_test.go wechat.go
