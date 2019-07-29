@@ -1,4 +1,5 @@
 # she# she员l
+
 [TOC]
 ## 小技巧
 ### 远程执行脚本
@@ -12,6 +13,7 @@ chsh -s /bin/zsh
 ## 工具
 ### sed
 #### 在文件行末追加字段
+
 ```bash
 sed 's/$/ '$hostname'/' hehe.file #hostname 为要替换的变量
 ```
