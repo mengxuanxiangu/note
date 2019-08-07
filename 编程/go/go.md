@@ -47,7 +47,8 @@ for index := 0; index < len(arr); index++ {
 #### 引用类型
 go 中五种引用类型有 slice， channel， function， map， interface
 
-### channel 
+### channel
+
 #### 定义
 [link](http://colobu.com/2016/04/14/Golang-Channels/)
 ```go
