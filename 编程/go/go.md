@@ -29,6 +29,7 @@ r := [...] int {99:-1}  //长度为100的数组，只有最后一个是-1，其�
 	    "a": "aa",
 	    "b": "bb",
     }
+// 注意：不能取 map 成员的地址
 ```
 #### 遍历
 ```go
@@ -45,6 +46,7 @@ for index := 0; index < len(arr); index++ {
 
 ### 引用
 #### 引用类型
+
 go 中五种引用类型有 slice， channel， function， map， interface
 
 ### channel
