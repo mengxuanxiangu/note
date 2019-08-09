@@ -4,6 +4,7 @@
 ## 语法
 ### 数组
 #### 数组定义
+
 ```go
 var a [3]int   //3个int型的数组，初始值是3个0,数组“零值”状态
 arr:=[5]int{1,2,3,4,5}   //定义并初始化长度为5的数组
@@ -12,8 +13,19 @@ q := [...] int {1,2,3} //不声明长度
 r := [...] int {99:-1}  //长度为100的数组，只有最后一个是-1，其他都是0
 ```
 
+#### 遍历
+
+``` go
+comPressTypeArr :=[...]string {"zip", "tar", "rar", "7z"}
+for i, v := range comPressTypeArr {
+    fmt.Println(i, v)
+}
+```
+
 ### map
+
 #### 定义
+
 ```go
     //声名再初始化
     var m1 map[string]string
@@ -45,6 +57,7 @@ for index := 0; index < len(arr); index++ {
 ```
 
 ### 引用
+
 #### 引用类型
 
 go 中五种引用类型有 slice， channel， function， map， interface
