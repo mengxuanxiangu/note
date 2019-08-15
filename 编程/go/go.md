@@ -56,6 +56,23 @@ for index := 0; index < len(arr); index++ {
 }
 ```
 
+
+
+#### 获取map所有值
+
+```go
+  func GetValues(infoMap map[string]*CallgraphOrderedInfo) []*CallgraphOrderedInfo {
+      if infoMap == nil {
+          return nil
+      }
+      arr := make([]*CallgraphOrderedInfo, 0, len(infoMap))
+      for _, info := range infoMap {
+          arr = append(arr, info)
+      }
+      return arr
+  }
+```
+
 ### 引用
 
 #### 引用类型
@@ -189,7 +206,156 @@ Hello  Joey
 Hello  Joey
 ========================
 ```
+
+
+### 字符串
+
+#### 字符串截取
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	fmt.Print(strings.Trim("¡¡¡Hello, Gophers!!!", "!¡"))//在参数1中，去掉参数2中的字符
+  //返回 Hello, Gophers
+}
+```
+
+#### 数组转字符串
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	s := []string{"foo", "bar", "baz"}
+	fmt.Println(strings.Join(s, ", "))
+}
+```
+
+#### 字符串分隔
+
+```go
+import "strings"
+
+strings.Split(alert.alertInterval, SPILITTER)
+```
+
+### select
+
+select就是用来监听和channel有关的IO操作，当 IO 操作发生时，触发相应的动作。
+
+#### 基本用法
+
+```go
+select {
+case <- chan1:
+// 如果chan1成功读到数据，则进行该case处理语句
+case chan2 <- 1:
+// 如果成功向chan2写入数据，则进行该case处理语句
+default:
+// 如果上面都没有成功，则进入default处理流程
+}
+```
+
+#### 执行顺序
+
+如果有一个或多个IO操作可以完成，则Go运行时系统会随机的选择一个执行，否则的话，如果有default分支，则执行default分支语句，如果连default都没有，则select语句会一直阻塞，直到至少有一个IO操作可以进行
+
+```go
+    start := time.Now()
+    c := make(chan interface{})
+    ch1 := make(chan int)
+    ch2 := make(chan int)
+
+    go func() {
+        time.Sleep(4 * time.Second)
+        close(c)
+    }()
+
+    go func() {
+        time.Sleep(3 * time.Second)
+        ch1 <- 3
+    }()
+
+    go func() {
+        time.Sleep(3 * time.Second)
+        ch2 <- 5
+    }()
+
+    fmt.Println("Blocking on read...")
+    select {
+    case <-c:
+        fmt.Printf("Unblocked %v later.\n", time.Since(start))
+    case <-ch1:
+        fmt.Printf("ch1 case...")
+    case <-ch2:
+        fmt.Printf("ch1 case...")
+    default:
+        fmt.Printf("default go...")
+    }
+
+/*
+执行结果
+Blocking on read...
+default go...
+Process finished with exit code 0
+*/
+```
+
+#### 求值顺序
+
+所有channel表达式都会被求值、所有被发送的表达式都会被求值。求值顺序：自上而下、从左到右
+
+```go
+var ch1 chan int
+var ch2 chan int
+var chs = []chan int{ch1, ch2}
+var numbers = []int{1, 2, 3, 4, 5}
+
+func main () {
+    select {
+    case getChan(0) <- getNumber(2):
+        fmt.Println("1th case is selected.")
+    case getChan(1) <- getNumber(3):
+        fmt.Println("2th case is selected.")
+    default:
+        fmt.Println("default!.")
+        }
+    }
+
+func getNumber(i int) int {
+    fmt.Printf("numbers[%d]\n", i)
+    return numbers[i]
+}
+
+func getChan(i int) chan int {
+    fmt.Printf("chs[%d]\n", i)
+    return chs[i]
+}
+/*
+执行结果
+chs[0]
+numbers[2]
+chs[1]
+numbers[3]
+default!.
+
+Process finished with exit code 0
+*/
+```
+
 ## 格式转换
+
 ### 字符串转int
 ```go
 import "strconv"
@@ -211,6 +377,7 @@ timestamp:= now.Unix()
     var y int = int(x)
 ```
 ### float64转string
+
 ```go
     strconv.FormatFloat(capacity, 'f', 1, 64)
 ```
@@ -314,45 +481,24 @@ b.String()
 #### SetFinalizer
 ```golang
 runtime.SetFinalizer(obj, func(obj *typeObj))
+
+func NewPostgresDB(config *conf.PostgresConfig) *PostgresDB {
+    db := &PostgresDB{
+        hostIp:     config.HostIP,
+        dbUserName: config.DBUserName,
+        dbPassword: config.DBPasswd,
+        dbName:     config.DBName,
+        tableName:  config.TableName,
+        inited:     false,
+    }
+    db.Connection()
+    runtime.SetFinalizer(db, (*PostgresDB).Close)
+    return db
+}
 ```
 func(obj *typeObj) 需要一个 typeObj 类型的指针参数 obj，特殊操作会在它上面执行。func 也可以是一个匿名函数。
 
 对象在被GC前，调用该函数
-## 字符串
-
-##字符串截取
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-)
-
-func main() {
-	fmt.Print(strings.Trim("¡¡¡Hello, Gophers!!!", "!¡"))
-}
-```
-### 数组转字符串
-```go
-package main
-
-import (
-	"fmt"
-	"strings"
-)
-
-func main() {
-	s := []string{"foo", "bar", "baz"}
-	fmt.Println(strings.Join(s, ", "))
-}
-```
-### 字符串分隔
-```go
-import "strings"
-
-strings.Split(alert.alertInterval, SPILITTER)
-```
 ## reflect
 
 ### 示例
@@ -569,36 +715,40 @@ go test -v  wechat_test.go wechat.go
 ```
 一定要带上原文件
 ### 测试单个函数
+
 ```bash
 go test -v -test.run TestRefreshAccessToken
 ```
-## 获取map所有值
+## match
+
+### rand
+
 ```go
-  func GetValues(infoMap map[string]*CallgraphOrderedInfo) []*CallgraphOrderedInfo {
-      if infoMap == nil {
-          return nil
-      }
-      arr := make([]*CallgraphOrderedInfo, 0, len(infoMap))
-      for _, info := range infoMap {
-          arr = append(arr, info)
-      }
-      return arr
-  }
-```
-### SetFinalizer
-用于在指定对象被析构前执行指定操作
-``` go
-func NewPostgresDB(config *conf.PostgresConfig) *PostgresDB {
-    db := &PostgresDB{
-        hostIp:     config.HostIP,
-        dbUserName: config.DBUserName,
-        dbPassword: config.DBPasswd,
-        dbName:     config.DBName,
-        tableName:  config.TableName,
-        inited:     false,
+package main
+import (
+    "fmt"
+    "math/rand"
+    "time"
+)
+func init(){
+    //以时间作为初始化种子
+    rand.Seed(time.Now().UnixNano())
+}
+func main() {
+
+    for i := 0; i < 10; i++ {
+        a := rand.Int()
+        fmt.Println(a)
     }
-    db.Connection()
-    runtime.SetFinalizer(db, (*PostgresDB).Close)
-    return db
+    for i := 0; i < 10; i++ {
+        a := rand.Intn(100)
+        fmt.Println(a)
+    }
+    for i := 0; i < 10; i++ {
+        a := rand.Float32()
+        fmt.Println(a)
+    }
+
 }
 ```
+
