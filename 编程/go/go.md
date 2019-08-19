@@ -119,7 +119,9 @@ func main() {
 }
 ```
 ### 匿名组合
+
 #### 初始化
+
 ```go
 type Base struct {
     Name string
