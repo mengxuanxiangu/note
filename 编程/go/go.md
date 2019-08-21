@@ -2,6 +2,7 @@
 
 [TOC]
 ## 语法
+
 ### 数组
 #### 数组定义
 
@@ -752,5 +753,18 @@ func main() {
     }
 
 }
+```
+
+## 工具
+
+### go tool vet
+
+命令的作用是检查Go语言源代码并且报告可疑的代码编写问题。比如，在调用`Printf`函数时没有传入格式化字符串，以及某些不标准的方法签名，等等。该命令使用试探性的手法检查错误，因此并不能保证报告的问题确实需要解决。但是，它确实能够找到一些编译器没有捕捉到的错误。
+
+```makefile
+  lint:
+      for pkg in "controller" "crawler" "data_process_framework"; do  \
+          $(GO) tool vet -all -shadow "$(SRCDIR)/$${pkg}";  \
+      done
 ```
 
