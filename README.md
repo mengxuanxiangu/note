@@ -1,2 +1,3 @@
 # personal note
-[toc]
+[TOC]
+

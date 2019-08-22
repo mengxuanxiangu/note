@@ -253,6 +253,94 @@ import "strings"
 strings.Split(alert.alertInterval, SPILITTER)
 ```
 
+#### 字符串拼接性能比较
+
+分别比较了 fmt.Sprintf，string +，strings.Join，bytes.Buffer，方法是循环若干次比较总时间。
+
+- fmt.Sprintf 和 strings.Join 速度相当
+- string + 比上述二者快一倍
+- bytes.Buffer又比上者快约400-500倍
+- 如果循环内每次都临时声明一个bytes.Buffer来使用，会比持续存在慢50%，但是仍然很快
+
+```go
+package main
+
+import (
+        "bytes"
+        "fmt"
+        "strings"
+        "time"
+)
+
+func benchmarkStringFunction(n int, index int) (d time.Duration) {
+        v := "ni shuo wo shi bu shi tai wu liao le a?"
+        var s string
+        var buf bytes.Buffer
+        t0 := time.Now()
+        for i := 0; i < n; i++ {
+                switch index {
+                case 0: // fmt.Sprintf
+                        s = fmt.Sprintf("%s[%s]", s, v)
+                case 1: // string +
+                        s = s + "[" + v + "]"
+                case 2: // strings.Join
+                        s = strings.Join([]string{s, "[", v, "]"}, "")
+                case 3: // temporary bytes.Buffer
+                        b := bytes.Buffer{}
+                        b.WriteString("[")
+                        b.WriteString(v)
+                        b.WriteString("]")
+                        s = b.String()
+                case 4: // stable bytes.Buffer
+                        buf.WriteString("[")
+                        buf.WriteString(v)
+                        buf.WriteString("]")
+                }
+                if i == n-1 {
+                        if index == 4 { // for stable bytes.Buffer
+                                s = buf.String()
+                        }
+                        fmt.Println(len(s)) // consume s to avoid compiler optimization
+                }
+        }
+        t1 := time.Now()
+        d = t1.Sub(t0)
+        fmt.Printf("time of way(%d)=%v\n", index, d)
+        return d
+}
+
+func main() {
+        k := 5
+        d := [5]time.Duration{}
+        for i := 0; i < k; i++ {
+                d[i] = benchmarkStringFunction(10000, i)
+        }
+        for i := 0; i < k-1; i++ {
+                fmt.Printf("way %d is %6.1f times of way %d\n", i, float32(d[i])/float32(d[k-1]), k-1)
+        }
+}
+
+/*
+执行结果:
+410000
+time of way(0)=747.642307ms
+410000
+time of way(1)=345.838829ms
+410000
+time of way(2)=430.388426ms
+41
+time of way(3)=1.137297ms
+410000
+time of way(4)=698.248µs
+way 0 is 1070.7 times of way 4
+way 1 is  495.3 times of way 4
+way 2 is  616.4 times of way 4
+way 3 is    1.6 times of way 4
+*/
+```
+
+
+
 ### select
 
 select就是用来监听和channel有关的IO操作，当 IO 操作发生时，触发相应的动作。
