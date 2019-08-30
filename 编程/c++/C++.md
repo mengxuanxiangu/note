@@ -1,6 +1,22 @@
 # C++
-[toc]
+[TOC]
+## 语法
+
+### string
+
+#### string 长度
+
+```c++
+string str = "my string";
+cout << str.length() << endl;
+cout << str.size() << endl;
+
+```
+
+
+
 ## 类型转换
+
 ## pragma once
     与头文件卫士作用相同
 ## typedef用法
@@ -145,7 +161,7 @@ typedef static int INT2;
 ```
 编译将失败，会提示“指定了一个以上的存储类”。
 
- 
+
 ### 3.typedef 与 #define的区别
 （1）#define是预处理指令，在编译预处理时进行简单的替换，不作正确性检查，不关含义是否正确照样带入，只有在编译已被展开的源程序时才会发现可能的错误并报错。
 例如：
@@ -178,7 +194,7 @@ const pStr p2 = string;
 p1++;  
 p2++;  
 ```
- 
+
 
 是p2++出错了。这个问题再一次提醒我们：typedef和#define不同，它不是简单的文本替换。上述代码中const pStr p2并不等于const char * p2。const pStr p2和const long x本质上没有区别，都是对变量进行只读限制，只不过此处变量p2的数据类型是我们自己定义的而不是系统固有类型而已。因此，const pStr p2的含义是：限定数据类型为char *的变量p2为只读，因此p2++错误。
 
