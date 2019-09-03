@@ -1,4 +1,4 @@
-[toc]
+[TOC]
 # md5 计算
 ``` python
 import hashlib
@@ -37,7 +37,7 @@ tomorrowTime = (datetime.datetime.now()+datetime.timedelta(days=1)).strftime('%Y
 ## string 转时间
 ``` python
 import datetime
-detester = ‘2017-01-01'
+detester = '2017-01-01'
 date = datetime.datetime.strptime(detester, '%Y-%m-%d')
 ```
 ## 时间转 string
@@ -54,7 +54,7 @@ arr = [1, 2, 3]
 print ",".join(arr)
 ```
 # logging
-[toc]
+[TOC]
 ## 日志切割
 使用TimedRotatingFileHandler
 ```python
@@ -77,7 +77,7 @@ print ",".join(arr)
 format="%(levelname)s: %(asctime)s.%(msecs)d: %(module)s * %(thread)d %(message)s <%(filename)s:%(lineno)d>"
 ```
 # 命令行解析
-[toc]
+[TOC]
 ## 格式
 ```python
 import argparse
