@@ -806,6 +806,9 @@ func GetFiles(dirPath string) (files []string, err error) {
 go test -v  wechat_test.go wechat.go
 ```
 一定要带上原文件
+
+-v 显示详细测试信息
+
 ### 测试单个函数
 
 ```bash
