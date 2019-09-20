@@ -249,7 +249,9 @@ typedef 和存储类关键字（storage class specifier） 　
 
 typedef register int FAST_COUNTER; // 错误
 编译通不过。问题出在你不能在声明中有多个存储类关键字。因为符号 typedef 已经占据了存储类关键字的位置，在 typedef 声明中不能用 register（或任何其它存储类关键字）
+
 ## rand
+
 ### srand()为非线程安全函数
 ```c++
 #include <iostream>
@@ -257,3 +259,21 @@ int main(int argc, char* argv){
     std::cout << "hello world" << std::endl;
 }
 ```
+
+## 计算md5
+
+```c++
+#include <openssl/md5.h>
+
+void cal_md5(char* query) {
+    const int MD5_LEN = 16;
+    const int BUF_LEN = 1024;
+    unsigned char md[MD5_LEN] = {'\0'};
+    char md5_buffer[BUF_LEN] = {'\0'};
+    MD5_CTX ctx;
+    MD5_Init(&ctx);
+    MD5_Update(&ctx, query, strlen(query));
+    MD5_Final(md, &ctx);
+}
+```
+
