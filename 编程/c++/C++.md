@@ -17,7 +17,31 @@ cout << str.size() << endl;
 
 ## 类型转换
 
+```c++
+//数据类型转换
+printf("%d\n", static_cast<int>(10.2));
+
+//指针类型转换
+int *pint = new int(1);
+char *pch = reinterpret_cast<char *>(pint);
+
+//涉及到const的指针类型转换
+const int num[5] = { 1,2,3,4,5 };
+const int *p = num;
+int *pint = const_cast<int *>(p);
+
+//int转string
+std::string str = std::to_string(10);
+
+//string 转int
+int data = std::stoi("10");
+int data = std::stoi("a10", 0, 16);
+```
+
+
+
 ## pragma once
+
     与头文件卫士作用相同
 ## typedef用法
 ### 1. 四个用途
@@ -198,7 +222,8 @@ p2++;
 
 是p2++出错了。这个问题再一次提醒我们：typedef和#define不同，它不是简单的文本替换。上述代码中const pStr p2并不等于const char * p2。const pStr p2和const long x本质上没有区别，都是对变量进行只读限制，只不过此处变量p2的数据类型是我们自己定义的而不是系统固有类型而已。因此，const pStr p2的含义是：限定数据类型为char *的变量p2为只读，因此p2++错误。
 
-## 4.使用 typedef 抑制劣质代码
+### 4.使用 typedef 抑制劣质代码
+
 typedef 声明，简称 typedef，为现有类型创建一个新的名字。比如人们常常使用 typedef 来编写更美观和可读的代码。所谓美观，意指 typedef 能隐藏笨拙的语法构造以及平台相关的数据类型，从而增强可移植性和以及未来的可维护性。本文下面将竭尽全力来揭示 typedef 强大功能以及如何避免一些常见的陷阱。
 
 定义易于记忆的类型名 A： 使用 typedefs 为现有类型创建同义字。
