@@ -13,6 +13,23 @@ cout << str.size() << endl;
 
 ```
 
+### map
+
+```c++
+//map 初始化
+std::map<std::string, std::shared_ptr<baidu::rpc::Channel>> _rpc_channel_map;
+
+//map 查找
+auto iter = _rpc_channel_map.find(host);
+if (iter != _rpc_channel_map.end()) {
+    return iter->second;
+}
+
+//map 插入
+#include <utility>
+_rpc_channel_map.insert(std::make_pair(host, channel));
+```
+
 
 
 ## 类型转换
@@ -301,4 +318,54 @@ void cal_md5(char* query) {
     MD5_Final(md, &ctx);
 }
 ```
+
+## gflag
+
+### gflag reload
+
+```c++
+#include <iostream>
+#include <gflags/gflags.h>
+#include <thread>
+#include <chrono>
+
+DEFINE_int32(port, 1988, "port");
+int main(int argc, char* argv[]) {
+    google::SetCommandLineOption("flagfile", "./conf/gflag_reload.conf"); //设置从配置文件中读取
+    for (int i = 0; i < 10; i ++) {
+        std::cout << "current port: " << FLAGS_port << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        google::SetCommandLineOption("flagfile", "./conf/gflag_reload.conf"); //只要执行此命令，则会重新读取配置文件
+    }
+}
+```
+
+## 锁
+
+### lock_guard 与unique_lock 区别
+
+lock_guard只能在析构时解锁
+
+unique_lock提供了解锁接口，可以随时解锁，析构时会根据当前锁的状态判断要不要释放锁。
+
+```c++
+void shared_print(string msg, int id) {
+    std::unique_lock<std::mutex> guard(_mu, std::defer_lock);// std::defer_lock 表示初始化时不默认上锁，可以不加
+    //do something 1
+
+    guard.lock();
+    // do something protected
+    guard.unlock(); //临时解锁
+
+    //do something 2
+
+    guard.lock(); //继续上锁
+    // do something 3
+    f << msg << id << endl;
+    cout << msg << id << endl;
+    // 结束时析构guard会临时解锁
+}
+```
+
+## 智能指针
 
