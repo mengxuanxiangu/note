@@ -1,4 +1,5 @@
 # C++
+
 [TOC]
 ## 语法
 
@@ -446,4 +447,37 @@ int main() {
 
 
 ## 智能指针
+
+## stream
+
+### boolalpha与noboolalpha
+
+让流将bool解析成为单词true, false
+
+``` c++
+void test_boolalpha()
+{
+	std::cout << "true is " << true << std::endl;
+	std::cout << "false is " << false << std::endl;
+ 
+	// 运行下面这个语句, 在输出流中的bool值将发生变化
+	std::cout << std::boolalpha;
+	std::cout << "true is " << true << std::endl;
+	std::cout << "false is " << false << std::endl;
+ 
+	// 运行下面这个语句, 在输出流中的bool值将恢复成0, 1值
+	std::cout << std::noboolalpha;
+	std::cout << "true is " << true << std::endl;
+	std::cout << "false is " << false << std::endl;
+ 
+	/* 输出如下:
+ 	true is 1
+	false is 0
+	true is true
+	false is false
+	true is 1
+	false is 0
+	*/
+}
+```
 
