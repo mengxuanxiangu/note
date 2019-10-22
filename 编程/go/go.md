@@ -471,6 +471,39 @@ Process finished with exit code 0
 */
 ```
 
+### string slice 值拷贝还是指针拷贝
+
+不修改时是指针拷贝，当有修改时就变成值拷贝了
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    var str string = "12345"
+    tmpstr := str
+    fmt.Printf("%x %x\n", str, tmpstr)
+    tmpstr = tmpstr + "x"
+    fmt.Printf("%x %x\n", str, tmpstr)
+
+    var a []byte = []byte("12345")
+    b := a
+    fmt.Printf("%x %x\n", a, b)
+    b = append(b, 'a')
+    fmt.Printf("%x %x\n", a, b)
+}
+
+/* 输出
+3132333435 3132333435
+3132333435 313233343578
+3132333435 3132333435
+3132333435 313233343561
+*/
+```
+
+
+
 ## 格式转换
 
 ### 字符串转int
@@ -593,6 +626,7 @@ fmt.Println(buf.String())
 b.Reset()
 
 ### 字符串化
+
 b.String()
 ## runtime
 #### SetFinalizer

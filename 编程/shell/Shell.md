@@ -211,3 +211,9 @@ cat /proc/interrupts | grep eth0
 sudo su work -c "meta-query relation service $host -f path|grep -vP 'path'"
 ```
 
+## dd 创建指定大小文件
+
+```bash
+dd if=/dev/zero of=sun.txt bs=1M count=1
+```
+
