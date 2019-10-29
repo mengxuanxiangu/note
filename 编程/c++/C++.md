@@ -481,3 +481,20 @@ void test_boolalpha()
 }
 ```
 
+### 文件读写
+
+``` c++
+#include <string>
+#include <fstream>
+#include <iostream>
+
+int main(int argc, char argv[]) {
+    std::ofstream out("./out.txt");
+    out << "hello world" << std::endl;
+    std::ifstream in("./cache_data");
+    std::string cache_value = "";
+    std::getline(in, cache_value);
+    std::cout << "read size:" << cache_value.size() << std::endl;
+}
+```
+
