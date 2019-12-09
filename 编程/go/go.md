@@ -507,11 +507,22 @@ func main() {
 ## 格式转换
 
 ### 字符串转int
+
 ```go
 import "strconv"
 request.STimestamp, _ = strconv.ParseInt(req.Form["start"][0], 10, 64)
 ```
+### int 转string
+
+```go
+import "strconv"
+a := strconv.Itoa(10)
+```
+
+
+
 ### 时间戳与时间互转
+
 ```go
 //时间戳转时间
 var startTime int64
@@ -522,6 +533,7 @@ now :=time.Now()
 timestamp:= now.Unix()
 ```
 ### float64转int
+
 ```go
     var x float64 = 5.7
     var y int = int(x)
@@ -545,6 +557,7 @@ func PathExist(path string) bool {
 }
 ```
 ### 创建目录
+
 ```go
 dir="./haha"
 err := os.Mkdir(dir, os.ModePerm)
@@ -554,7 +567,23 @@ if err != nil {
     fmt.Printf("mkdir success!\n")
 }
 ```
+### 删除文件
+
+```go
+import os
+
+err := os.Remove(logFile)
+if err != nil {
+  //删除失败
+} else {
+  //删除成功
+}
+```
+
+
+
 ### 写文件
+
 如果文件不存在则自动创建，如果存在则清空写
 ```go
 func Write1()  {
@@ -579,6 +608,7 @@ func Read0()  (string){
 }
 ```
 ### 获取当前主机名
+
 ```go
 host, err := os.Hostname()
 if err != nil {
@@ -587,6 +617,25 @@ if err != nil {
     fmt.Printf("%s", host)
 }
 ```
+### 获取当前主机IP
+
+```go
+func getLocalIP() (net.IP, error) {
+    addrs, err := net.InterfaceAddrs()
+    if err != nil {
+      	return nil, err
+    }
+    for _, addr := range addrs {
+        if ipnet, ok := addr.(*net.IPNet); ok && ipnet.IP.To4() != nil && !ipnet.IP.IsLoopback() {
+          	return ipnet.IP, nil
+        }
+    }
+    return nil, errors.New("no proper ip")
+}
+```
+
+
+
 ## bytes.Buffer
 
 ### 声明一个Buffer的四种方法：
@@ -705,7 +754,7 @@ func (factory *ModuleFactory) GetModule(moduleName string) (Module, error) {
 
 ## datetime
 ### 转换
-```golang
+```go
 //时间戳转时间格式
 time.Unix(timestamp, 0).Format("2006010203")
 
@@ -744,12 +793,14 @@ start := end.Add(duration)//7天前
     fmt.Println("离现在过去了：",durtime)
 ```
 ### sleep
+
 ```go
 time.Sleep(time.Duration(m.interval) * time.Millisecond) //sleep一段时间
 ```
 ## json
 
 ### 基础标记
+
 ```go
 type Span struct {
 	Qid            string  `json:"Q,omitempty"`
@@ -917,5 +968,75 @@ func main() {
       for pkg in "controller" "crawler" "data_process_framework"; do  \
           $(GO) tool vet -all -shadow "$(SRCDIR)/$${pkg}";  \
       done
+```
+
+## 性能
+
+### regex 与grep
+
+性能测试，对于复杂的正则表达式，regex是grep的9倍多
+
+```go
+package main                                                                                                                                                                                              [7/1889]
+
+import (
+        "bufio"
+        "fmt"
+        "os"
+        "os/exec"
+        "regexp"
+        "strings"
+        "time"
+)
+
+var reg *regexp.Regexp
+
+func getQid(data []byte) string {
+        loc := reg.FindSubmatchIndex(data)
+        if loc != nil {
+                return string(data[loc[2]:loc[3]])
+        }
+        return ""
+}
+
+func main() {
+        f, _ := os.Open("./test.txt")
+        reg, _ = regexp.Compile("logid=(\\d+)")
+        defer f.Close()
+        buf := bufio.NewScanner(f)
+        qidArray := []string{"121920813", "12225553", "122162764", "122102689", "122182398", "122162541", "122200603", "122235696", "122180750", "122279671", "122213980", "122319640", "122322624", "12238844", "
+122369732", "12235983", "122341934", "122442836", "122406810", "122410544", "122513441", "122497713", "122525537", "12250966", "122508542", "122537301", "122441875", "122582624", "122582906", "122624171", "1226
+48385", "122665758", "122710168", "122671412", "12270842", "122696935", "122757315", "122820227", "122860895", "122896556", "122906111", "122993381", "122963882", "12313797", "12360658", "12372816", "12351786",
+ "1239241", "123136110", "123182267", "123211360", "123282192", "123391826", "123326251", "123439420", "123407540", "123480350", "123453805", "123536215", "123582586", "123595642", "123637925", "123639769", "12
+3707779", "123687121", "123714771", "123726376", "123519647", "123656389", "123739183", "123855954", "123811528", "123890768", "123938206", "123890169", "123961869", "123968504", "123993164", "12410252", "12463
+5", "123986799", "12448368", "12474331", "124173629", "124191553", "124100217", "124239992", "124301311", "124285388", "124342703", "12432634", "124366891", "124411282", "124444166", "124469773", "124482448", "
+124480431", "124560814", "124528953", "124598894"}
+
+        //prepare grep
+        CMD_FMT := "nice -n 19 grep -E '%s' %s/%s"
+
+        now := time.Now()
+        qidMap := make(map[string]int)
+        for _, id := range qidArray {
+                qidMap[id] = 1
+        }
+        for buf.Scan() {
+                data := buf.Bytes()
+                qid := getQid(data)
+                if _, exist := qidMap[qid]; exist {
+                }
+        }
+        fmt.Println("run with regex:", time.Since(now))
+        now = time.Now()
+        command := fmt.Sprintf(CMD_FMT, strings.Join(qidArray, "|"), "./", "test.txt")
+                                     if output, err := cmd.Output(); err != nil {
+        fmt.Printf("run cmd:%v failed err:%v output:%v \n", command, err, output)
+        }
+        fmt.Println("run with grep:", time.Since(now))
+}
+/*result
+run with regex: 31.278593ms
+run with grep: 239.16918ms
+*/
 ```
 

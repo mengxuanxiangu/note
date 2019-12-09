@@ -1,4 +1,4 @@
-# she# she员l
+# shell
 
 [TOC]
 ## 小技巧
@@ -205,6 +205,8 @@ cat /proc/interrupts | grep eth0
 * soft core unlimited
 ```
 
+/sbin/sysctl -p 使立即生效
+
 ## su 至指定账户并执行命令
 
 ```bash
@@ -215,5 +217,19 @@ sudo su work -c "meta-query relation service $host -f path|grep -vP 'path'"
 
 ```bash
 dd if=/dev/zero of=sun.txt bs=1M count=1
+```
+
+## 文件操作
+
+### 把两个文件按行合并
+
+``` bash
+paste file1 file2
+```
+
+## 获取占用fd最大的前20个进程
+
+```bash
+for x in `ps -eF| awk '{ print $2 }'`;do echo `ls /proc/$x/fd 2> /dev/null | wc -l` $x `cat /proc/$x/cmdline 2> /dev/null`;done | sort -n -r | head -n 20
 ```
 
