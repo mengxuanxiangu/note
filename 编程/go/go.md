@@ -543,9 +543,31 @@ timestamp:= now.Unix()
 ```go
     strconv.FormatFloat(capacity, 'f', 1, 64)
 ```
+### int与string互转
+
+```go
+func InetAtoN(ipStr string) (int64, error) {
+	ret := big.NewInt(0)
+	ip := net.ParseIP(ipStr)
+	if ip == nil {
+		return -1, fmt.Errorf("invalid ip address")
+	}
+	ret.SetBytes(ip.To4())
+	return ret.Int64(), nil
+}
+
+func InetNtoA(ip int64) string {
+	return fmt.Sprintf("%d.%d.%d.%d",
+		byte(ip>>24), byte(ip>>16), byte(ip>>8), byte(ip))
+}
+```
+
+
+
 ## os
 
 ### 判断目录或文件是否存在
+
 ```go
 import os
 func PathExist(path string) bool {
