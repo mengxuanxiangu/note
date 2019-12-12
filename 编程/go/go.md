@@ -517,6 +517,9 @@ request.STimestamp, _ = strconv.ParseInt(req.Form["start"][0], 10, 64)
 ```go
 import "strconv"
 a := strconv.Itoa(10)
+var b int64
+b = 16
+str := strconv.FormatInt(b, 10)
 ```
 
 
