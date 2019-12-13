@@ -2,6 +2,7 @@
 
 [TOC]
 ## 小技巧
+
 ### 远程执行脚本
 ``` bash
 pl mac 'bash -c "$(wget -q -O - 10.195.65.39:/tmp/do.sh)"'
@@ -28,6 +29,7 @@ seq -f "%02g" 1 3
 
 ### awk
 #### awk之match函数
+
 功能：match函数是用于个性化定制搜索模式。
 
 例子：
@@ -73,14 +75,22 @@ mrna
 ```
 
 #### awk之拼接字符串
+
 ```bash
 cat /home/work/search/basa_ac/log/log.bak/search_ac.log.2019030${day}*|grep -oP '^SEARCH_NOTICE: \d+-\d+ \d+:\d+:\d+: |pre2=.*? |qtck\d+_2=.*? '|awk '/^SEARCH_NOTICE/{if (n++) print " "}{printf $0}'
 ```
 会把以SEARCH_NOTICE 开头的行合并，相当之好用
 
+#### awk 合并奇数行与偶数行
+
+``` shell
+awk '{if(NR%2 == 1){machine=$NF}else{print machine, $1}}' file
+```
+
 ### ss 使用
 
 #### ss -m
+
 说下各字段意思
 
  mem:(r0,w0,f0,t0)
