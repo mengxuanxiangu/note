@@ -984,6 +984,95 @@ func main() {
 
 ## regex
 
+```go
+USERIDREGSTR := "^[A-Fa-f0-9]{32}"
+reg := regexp.MustCompile(USERIDREGSTR)
+if reg.Match([]byte(key)) {
+	return false
+}
+```
+
+
+
+## redis
+
+### conn
+
+```go
+client, err := redis.Dial("tcp", r.config.Host,
+		redis.DialConnectTimeout(time.Duration(r.config.ConnTimeoutMs)*time.Millisecond),
+		redis.DialReadTimeout(time.Duration(r.config.ReadTimeoutMs)*time.Millisecond),
+		redis.DialWriteTimeout(time.Duration(r.config.WriteTimeoutMs)*time.Millisecond))
+	if err != nil {
+		log.Logger.Error("connect to reporter failed host:%v err:%v", r.config.Host, err)
+		return err
+}
+```
+
+### set
+
+```go
+	v, err := redis.String(r.client.Do("setex", key, ttl, value))
+	if err != nil {
+		return nil
+	}
+	if v != "OK" {
+		return fmt.Errorf("set falied")
+	}
+	return nil
+```
+
+### get
+
+```go
+	v, err := r.client.Do("get", key)
+	if err != nil {
+		return nil, err
+	}
+	result, err := redis.Bytes(v, err)
+	if err != nil {
+		if err == redis.ErrNil {
+			return []byte(""), nil
+		}
+		return nil, err
+	}
+	return result, nil
+```
+
+
+
+### scan
+
+```go
+func (r *Redis) scanKeys(keyReg string, logid int64) ([]string, error) {
+	var (
+		cursor int64
+		result []string
+	)
+	result = make([]string, 0)
+	for {
+		var keys []string
+		values, err := redis.Values(r.client.Do("SCAN", cursor, "MATCH", keyReg, "COUNT", r.config.ScanCount))
+		if err != nil {
+			log.Logger.Error("[logid:%v] scan keys failed err:%v", logid, err)
+			return nil, err
+		}
+		for len(values) > 0 {
+			values, err = redis.Scan(values, &cursor, &keys)
+			if err != nil {
+				log.Logger.Error("[logid:%v] scan keys failed err:%v", logid, err)
+				return nil, err
+			}
+			result = append(result, keys...)
+		}
+		if cursor == 0 {
+			break
+		}
+	}
+	return result, nil
+}
+```
+
 
 
 ## 工具
