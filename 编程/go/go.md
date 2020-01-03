@@ -546,7 +546,7 @@ timestamp:= now.Unix()
 ```go
     strconv.FormatFloat(capacity, 'f', 1, 64)
 ```
-### int与string互转
+### IP int与string互转
 
 ```go
 func InetAtoN(ipStr string) (int64, error) {
