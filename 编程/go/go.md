@@ -534,6 +534,8 @@ date := timeS.Format("2006-01-02 15:04:05")
 //时间转时间戳
 now :=time.Now()
 timestamp:= now.Unix()
+//字符串转时间
+start, err := time.ParseInLocation("20060102", "20200101", time.Local)
 ```
 ### float64转int
 
