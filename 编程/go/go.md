@@ -522,8 +522,6 @@ b = 16
 str := strconv.FormatInt(b, 10)
 ```
 
-
-
 ### 时间戳与时间互转
 
 ```go
@@ -1158,5 +1156,32 @@ func main() {
 run with regex: 31.278593ms
 run with grep: 239.16918ms
 */
+```
+
+## protobuf
+
+### marshal
+
+```go
+info := &baidu_bos_seer.BucketResource{
+  Download:         &vv.download,
+  Upload:           &vv.upload,
+  CrossAZDownload:  &vv.crossAZDownload,
+  CrossAZUpload:    &vv.crossAZUpload,
+  Mysql:            &vv.mysql,
+  MysqlOfDelete:    &vv.mysqlOfDelete,
+  Memory:           &vv.memory,
+  ExternalDownload: &vv.externalDownload,
+  BgwDownload:      &vv.bgwDownload,
+  BgwUpload:        &vv.bgwUpload,
+  InternalDownload: &vv.internalDownload,
+}
+data, err := proto.Marshal(info)
+```
+
+### unmarshal
+
+```go
+
 ```
 
