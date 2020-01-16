@@ -1182,6 +1182,7 @@ data, err := proto.Marshal(info)
 ### unmarshal
 
 ```go
-
+resource := &baidu_bos_seer.BucketResource{}
+err := proto.Unmarshal(value, resource)
 ```
 
