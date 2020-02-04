@@ -18,7 +18,16 @@ chsh -s /bin/zsh
 ```bash
 sed 's/$/ '$hostname'/' hehe.file #hostname 为要替换的变量
 ```
+#### 删除指定行
+
+```bash
+sed '1,4d' hehe.file #删除1~4行
+sed '4d' hehe.file #删除第4行
+sed -e '1d' -e '3d' hehe.file #删除第1行和第4行
+```
+
 ### seq
+
 控制位数
 ```bash
 seq -f "%02g" 1 3
