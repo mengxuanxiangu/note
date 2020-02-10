@@ -26,6 +26,12 @@ sed '4d' hehe.file #删除第4行
 sed -e '1d' -e '3d' hehe.file #删除第1行和第4行
 ```
 
+#### 指定行追加文件内容
+
+```bash 
+sed -i '/10.175.149.111*$/r aa' frequency.conf # aa为要追加的文件
+```
+
 ### seq
 
 控制位数
@@ -37,6 +43,7 @@ seq -f "%02g" 1 3
 03
 
 ### awk
+
 #### awk之match函数
 
 功能：match函数是用于个性化定制搜索模式。
