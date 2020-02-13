@@ -728,6 +728,7 @@ func(obj *typeObj) 需要一个 typeObj 类型的指针参数 obj，特殊操作
 ## reflect
 
 ### 示例
+
 ```go
   func CalAttrWeight(capacity interface{}, attrArr []string) {
       var ref reflect.Value
@@ -754,6 +755,7 @@ func(obj *typeObj) 需要一个 typeObj 类型的指针参数 obj，特殊操作
     原因是指针的ValueOf返回的是指针的Type，它是没有Field的，所以也就不能使用FieldByName
 
 ### 根据类名创建对象
+
 ```go
 
 type ModuleFactory struct {
@@ -778,7 +780,18 @@ func (factory *ModuleFactory) GetModule(moduleName string) (Module, error) {
 注意：
 >     Value.Addr()是获取这个 value 的指针。用于通过返射获取一个 struct 对象的指针，如果要获取的是 struct 对象，则不需要
 
+### 校验struct是否存在成员
+
+```go
+ref := reflect.ValueOf(baidu_bos_seer.BucketResource{})
+value := ref.FieldByName(param.Type)
+if !value.IsValid() {
+  return nil, fmt.Errorf("invalid type type=%v", param.Type)
+}
+```
+
 ## datetime
+
 ### 转换
 ```go
 //时间戳转时间格式
