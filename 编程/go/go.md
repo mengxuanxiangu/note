@@ -1200,3 +1200,12 @@ resource := &baidu_bos_seer.BucketResource{}
 err := proto.Unmarshal(value, resource)
 ```
 
+## time
+
+### 时间运算
+
+```go
+now := time.Now() //获取当前时间
+before := time.Now().Add(time.Duration(-100) * time.Second) // 前100秒
+```
+
