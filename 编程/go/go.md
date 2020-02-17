@@ -622,6 +622,21 @@ func Write1()  {
     }
     fmt.Println("write success")
 }
+
+//逐行写入
+func writeFile() {
+  arr := [...]string{"a", "b", "c", "d"}
+  f, err := os.Create("./result")
+  if err != nil {
+    fmt.Println("create file failed", err)
+  }
+  defer f.Close()
+  w := bufio.NewWriter(f)
+  for _, v := range arr {
+    w.WriteString(v + "\n")
+  }
+  w.Flush()
+}
 ```
 ### 读文件
 ```go
@@ -631,6 +646,21 @@ func Read0()  (string){
         fmt.Println("read fail", err)
     }
     return string(f)
+}
+
+//逐行读取
+func readFile() []string {
+  f, err := os.Open("./keys.txt")
+  if err != nil {
+    fmt.Println("open file failed", err)
+    return nil
+  }
+  scanner := bufio.NewScanner(f)
+  result := make([]string, 0, 15000000)
+  for scanner.Scan() {
+    result = append(result, scanner.Text())
+  }
+  return result
 }
 ```
 ### 获取当前主机名
