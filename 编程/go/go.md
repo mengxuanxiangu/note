@@ -1239,4 +1239,7 @@ now := time.Now() //获取当前时间
 before := time.Now().Add(time.Duration(-100) * time.Second) // 前100秒
 ```
 
-## 
+## sync
+
+### lock
+
