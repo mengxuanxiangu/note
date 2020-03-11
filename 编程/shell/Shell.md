@@ -32,6 +32,13 @@ sed -e '1d' -e '3d' hehe.file #删除第1行和第4行
 sed -i '/10.175.149.111*$/r aa' frequency.conf # aa为要追加的文件
 ```
 
+#### 匹配行后添加内容
+
+```bash
+sed -i '/proxy_set_header X-Logid*/a\proxy_set_header X-Vip $vip;' nginx.conf # 匹配行后加
+sed -i '/proxy_set_header X-Logid*/i\proxy_set_header X-Vip $vip;' nginx.conf # 匹配行前加
+```
+
 ### seq
 
 控制位数
