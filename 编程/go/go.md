@@ -606,6 +606,47 @@ if err != nil {
 }
 ```
 
+### 获取程序所在目录
+
+```go
+func getExecutePath1() string {
+    dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println(dir)
+
+    return dir
+}
+
+//或者
+func getExecutePath2() string {
+    dir, err := os.Executable()
+    if err != nil {
+        fmt.Println(err)
+    }
+
+    exPath := filepath.Dir(dir)
+    fmt.Println(exPath)
+
+    return exPath
+}
+```
+
+### 获取程序执行目录
+
+```go
+func getExecutePath3() string {
+    dir, err := os.Getwd()
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println(dir)
+
+    return dir
+}
+```
+
 
 
 ### 写文件
@@ -626,7 +667,7 @@ func Write1()  {
 //逐行写入
 func writeFile() {
   arr := [...]string{"a", "b", "c", "d"}
-  f, err := os.Create("./result")
+  f, err := os.OpenFile("monitor.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
   if err != nil {
     fmt.Println("create file failed", err)
   }
@@ -1237,6 +1278,7 @@ err := proto.Unmarshal(value, resource)
 ```go
 now := time.Now() //获取当前时间
 before := time.Now().Add(time.Duration(-100) * time.Second) // 前100秒
+now.After(before) //时间比较
 ```
 
 ## sync
