@@ -1,5 +1,22 @@
 [TOC]
+# 语法
+
+## 循环
+
+### 数组遍历
+
+```python
+#方法一
+for i in arr:
+  print i, arr[i]
+
+# 方法二
+for i in range(0,9):
+  print i, arr[i]
+```
+
 # md5 计算
+
 ``` python
 import hashlib
 import sys
@@ -20,12 +37,25 @@ if __name__ == '__main__':
     print m.hexdigest()
 ```
 
-# 进制转换
-## int 转 二进制
+# 格式转换
+
+## 字符串转数据
+
+``` python
+
+```
+
+
+
+## 进制转换
+
+### int 转 二进制
+
 ``` python
     b = bin(32768).replace("0b", "")
 ```
 # datetime
+
 ## 获取当前时间
 ```python
 import datetime
@@ -53,8 +83,16 @@ detester = date.strftime(‘%Y-%m-%d')
 arr = [1, 2, 3]
 print ",".join(arr)
 ```
+## 判断子串
+
+```python
+a = "abc"
+b = "bc"
+print b in a
+```
+
 # logging
-[TOC]
+
 ## 日志切割
 使用TimedRotatingFileHandler
 ```python
@@ -77,8 +115,8 @@ print ",".join(arr)
 format="%(levelname)s: %(asctime)s.%(msecs)d: %(module)s * %(thread)d %(message)s <%(filename)s:%(lineno)d>"
 ```
 # 命令行解析
-[TOC]
 ## 格式
+
 ```python
 import argparse
 parser = argparse.ArgumentParser(description='adjust bs app quota')
@@ -87,4 +125,15 @@ parser.add_argument('-p', '--percent', required = False, action = 'store_true',h
 args = parser.parse_args()
 ```
 ## 无值参数
+
 只要添加action = 'store_true'
+
+#文件
+
+## 文件读写
+
+```python
+with open(data_file, 'r') as f:
+    lines = f.readlines()
+```
+
