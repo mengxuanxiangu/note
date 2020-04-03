@@ -44,6 +44,10 @@ if (iter != _rpc_channel_map.end()) {
 //map 插入
 #include <utility>
 _rpc_channel_map.insert(std::make_pair(host, channel));
+//遍历
+for(auto &it : m){
+  cout << it.first << "-" << it.second <<endl;
+}
 ```
 
 
