@@ -50,6 +50,16 @@ for(auto &it : m){
 }
 ```
 
+### 数组
+
+```c++
+//遍历
+int arr[] = {1,2,3,4,5}
+for (auto a : arr) {
+  cout << a << endl;
+}
+```
+
 
 
 ## 类型转换
