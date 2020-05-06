@@ -60,7 +60,11 @@ for (auto a : arr) {
 }
 ```
 
-
+### vector
+```c++
+//创建&初始化
+std::vector<int> v(10, -1);
+```
 
 ## 类型转换
 
@@ -89,7 +93,10 @@ int data = std::stoi("a10", 0, 16);
 
 ## pragma once
 
-    与头文件卫士作用相同
+```c++
+与头文件卫士作用相同
+#pragma once //用法
+```
 ## typedef用法
 ### 1. 四个用途
 #### 用途一：
@@ -509,6 +516,28 @@ int main(int argc, char argv[]) {
     std::string cache_value = "";
     std::getline(in, cache_value);
     std::cout << "read size:" << cache_value.size() << std::endl;
+}
+```
+
+## 多线程
+
+### 创建线程
+
+``` c++
+class IndexManager {
+public:
+    void work_loop() {
+        while(_running) {
+          //do something
+        }
+    }
+};
+
+int main() {
+  IndexManager* manager = new IndexManager();
+  auto thread = std::thread(std::mem_fn(&IndexManager::work_loop), manager);
+  thread.start();
+  thread.join();
 }
 ```
 
