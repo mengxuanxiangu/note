@@ -266,3 +266,9 @@ paste file1 file2
 for x in `ps -eF| awk '{ print $2 }'`;do echo `ls /proc/$x/fd 2> /dev/null | wc -l` $x `cat /proc/$x/cmdline 2> /dev/null`;done | sort -n -r | head -n 20
 ```
 
+## 校验端口通不通
+
+```shell
+nc -w 1 - v 150.138.249.231 443
+```
+
