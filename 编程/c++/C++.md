@@ -541,3 +541,167 @@ int main() {
 }
 ```
 
+## std::function
+
+类模板std::function是一种通用的多态函数包装器。std::function可以存储，复制和调用任何Callable 目标的实例- 函数，lambda表达式，绑定表达式或其他函数对象，以及指向成员函数和指向数据成员的指针。
+
+所存储的可调用对象被称为目标的std::function。如果a不std::function包含目标，则将其称为空。调用目标的的空std::function的结果的std :: bad_function_call抛出异常。
+
+### 普通函数
+
+``` c++
+void gFunc()
+{
+	cout << "gFunc" << endl;
+}
+int main()
+{
+	std::function<void()> f = gFunc;
+	f();
+ 
+	getchar();
+	return 0;
+}
+```
+
+### 模板函数
+
+``` C+
+template <class T>
+T g_Add(T i, T j)
+{
+	cout << i + j;
+	return i + j;
+}
+ 
+ 
+int main()
+{
+	std::function<int(int,int)> f = g_Add<int>;
+	f(2,3);
+ 
+	getchar();
+	return 0;
+}
+```
+
+### 匿名函数
+
+```c++
+auto g_Lambda = [](int i, int j)
+{
+	return i + j;
+}; //匿名函数 此处有分号
+ 
+int main()
+{
+	std::function<int(int, int)> f = g_Lambda;
+	cout<<f(2,3);
+ 
+	getchar();
+	return 0;
+}
+```
+
+### 函数对象
+
+```c++
+//函数对象
+struct Add
+{
+	int operator()(int i, int j)
+	{
+		return i + j;
+	}
+};
+ 
+//模板函数对象
+template <class T>
+struct AddT
+{
+	T operator()(T i, T j)
+	{
+		return i + j;
+	}
+};
+ 
+ 
+int main()
+{
+	std::function<int(int, int)> f = Add();
+	cout<<f(2,3)<<endl;
+ 
+	std::function<int(int, int)> ft = AddT<int>();
+	cout << ft(5, 6)<<endl;
+ 
+	getchar();
+	return 0;
+}
+```
+
+### 类成员函数
+
+```c++
+class Computer
+{
+public:
+	static int Add(int i, int j)
+	{
+		return i + j;
+	}
+ 
+	template<class T>
+	static T AddT(T i, T j)
+	{
+		return i + j;
+	}
+ 
+	int AddN(int i, int j)
+	{
+		return i + j;
+	}
+};
+ 
+//存储对成员函数的调用 
+ 
+int main()
+{
+	//1、 类静态函数
+	std::function<int(int, int)> f = &Computer::Add;
+	cout << f(1, 1) << endl;
+ 
+	//2、 类静态模板函数
+	std::function<int(int, int)> ft = &Computer::AddT<int>;
+	cout << ft(1, 1) << endl;
+ 
+ 
+ 
+	//普通函数绑定  需要构造类对象
+	Computer c;
+ 
+	//3、 普通函数 需使用bind,将类对象地址 &c 绑定上
+	std::function<int(int, int)> fN = std::bind(&Computer::AddN, &c, placeholders::_1, placeholders::_2);
+	cout << fN(1, 1) << endl;
+ 
+ 
+	//4、普通函数， 也可以这样调用  个人觉得这个比 bind 麻烦，不建议
+	std::function <int(const Computer ＆, int, int)> fN2 = &Computer::AddN;
+	cout << fN2(c,1, 1) << endl;
+ 
+ 
+ 
+ 
+ 
+	getchar();
+	return 0;
+}
+```
+
+### lamda
+
+```C++
+std::function<void(bool)> callable = [this, ctx](bool is_stop) {
+  this->OnCompletion(ctx);
+};
+```
+
