@@ -110,6 +110,13 @@ cat /home/work/search/basa_ac/log/log.bak/search_ac.log.2019030${day}*|grep -oP 
 awk '{if(NR%2 == 1){machine=$NF}else{print machine, $1}}' file
 ```
 
+#### 去掉行末的回车
+
+```bash
+cat aa|awk '{printf $0" "}'
+# 结果 bd bj bjfsg fsh fwh gz gzfsg hb-fsg hkg sin su szfsg yq %
+```
+
 ### ss 使用
 
 #### ss -m
