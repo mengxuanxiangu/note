@@ -54,6 +54,17 @@ if __name__ == '__main__':
 ``` python
     b = bin(32768).replace("0b", "")
 ```
+### ip int转string
+
+```python
+import socket
+import struct
+import sys
+print socket.inet_ntoa(struct.pack("!I", int(sys.argv[1])))
+```
+
+
+
 # datetime
 
 ## 获取当前时间
