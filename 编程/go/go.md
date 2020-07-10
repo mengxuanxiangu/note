@@ -253,6 +253,10 @@ func main() {
 import "strings"
 
 strings.Split(alert.alertInterval, SPILITTER)
+
+//用不等的空格分隔字符串
+str := "0 blob_very_cold     1377982    0            10272563458423660852   16"
+tok := strings.Fields(str)
 ```
 
 #### 字符串拼接性能比较
