@@ -208,10 +208,16 @@ ${file//dir/path}：将全部dir 替换为 path：/path1/path2/path3/my.file.txt
 ```
 ## fio磁盘性能测试工具
 ```bash
-fio -name iops -rw=write -bs=300kb -runtime=300 -filename ./test.log --allow_mounted_write=1 --direct=1
+fio -name iops -rw=write -bs=300kb -runtime=300 -filename ./test.log --allow_mounted_write=1 --direct=1 --size=10240000
 ```
 效果如下：
+
+SSD:
+
 ![cac280b4246ede8979c16b310ea17ce1](http://ww3.sinaimg.cn/large/006tNc79ly1g5412b2oq4j31ez0lyq9g.jpg)
+SATA:
+
+![image-20200715170415346](../../../note/baidu/personal-code/houjinchao-note/img/image-20200715170415346.png)
 
 ## 查看网卡多队列
 
