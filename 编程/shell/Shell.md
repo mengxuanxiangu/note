@@ -38,7 +38,10 @@ sed -i '/10.175.149.111*$/r aa' frequency.conf # aa为要追加的文件
 sed -i '/proxy_set_header X-Logid*/a\proxy_set_header X-Vip $vip;' nginx.conf # 匹配行后加
 sed -i '/proxy_set_header X-Logid*/i\proxy_set_header X-Vip $vip;' nginx.conf # 匹配行前加
 ```
-
+#### 获取指定行
+```bash
+sed -n '1000, 10000'p aa.txt
+```
 ### seq
 
 控制位数
