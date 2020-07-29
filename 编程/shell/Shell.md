@@ -11,7 +11,22 @@ pl mac 'bash -c "$(wget -q -O - 10.195.65.39:/tmp/do.sh)"'
 ``` bash
 chsh -s /bin/zsh
 ```
+### demsg显示时间
+
+```bash
+dmesg_with_human_timestamps () {
+    $(type -P dmesg) "$@" | perl -w -e 'use strict;
+        my ($uptime) = do { local @ARGV="/proc/uptime";<>}; ($uptime) = ($uptime =~ /^(\d+)\./);
+        foreach my $line (<>) {
+            printf( ($line=~/^\[\s*(\d+)\.\d+\](.+)/) ? ( "[%s]%s\n", scalar localtime(time - $uptime + $1), $2 ) : $line )
+        }'
+}
+```
+
+
+
 ## 工具
+
 ### sed
 #### 在文件行末追加字段
 
