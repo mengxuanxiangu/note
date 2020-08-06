@@ -303,3 +303,8 @@ for x in `ps -eF| awk '{ print $2 }'`;do echo `ls /proc/$x/fd 2> /dev/null | wc 
 nc -w 1 - v 150.138.249.231 443
 ```
 
+## wiki添加阅读量统计
+
+```markdown
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> <span id="busuanzi_container_page_pv" style="font-size:1.2em;color:grey;background-color:lightyellow">本文总阅读量 <span id="busuanzi_value_page_pv" style="color:green"></span> 次</span></p>
+```

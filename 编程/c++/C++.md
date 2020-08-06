@@ -705,3 +705,26 @@ std::function<void(bool)> callable = [this, ctx](bool is_stop) {
 };
 ```
 
+## protobuf 
+
+### repeated Filed
+
+Given the message type:
+
+```protobuf
+message Bar {}
+```
+
+For this field definitions:
+
+```protobuf
+repeated Bar foo = 1;
+```
+
+- `int foo_size() const`: Returns the number of elements currently in the field.
+- `const Bar& foo(int index) const`: Returns the element at the given zero-based index. Calling this method with index outside of [0, foo_size()) yields undefined behavior.
+- `Bar* mutable_foo(int index)`: Returns a pointer to the mutable `Bar` object that stores the value of the element at the given zero-based index. Calling this method with index outside of [0, foo_size()) yields undefined behavior.
+- `Bar* add_foo()`: Adds a new element to the end of the field and returns a pointer to it. The returned `Bar` is mutable and will have none of its fields set (i.e. it will be identical to a newly-allocated `Bar`).
+- `void clear_foo()`: Removes all elements from the field. After calling this, `foo_size()` will return zero.
+- `const RepeatedPtrField<Bar>& foo() const`: Returns the underlying `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
+- `RepeatedPtrField<Bar>* mutable_foo()`: Returns a pointer to the underlying mutable `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
