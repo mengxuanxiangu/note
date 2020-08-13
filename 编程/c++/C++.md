@@ -64,6 +64,9 @@ for (auto a : arr) {
 ```c++
 //创建&初始化
 std::vector<int> v(10, -1);
+for (auto a : v) {
+  cout << a << endl;
+}
 ```
 
 ## 类型转换
