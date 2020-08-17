@@ -370,7 +370,14 @@ func randSeq(n int) []byte {
 }
 ```
 
+### 保留小数
 
+```go
+func Decimal(value float64) float64 {
+	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
+	return value
+}
+```
 
 ### select
 
