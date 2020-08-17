@@ -88,6 +88,7 @@ date = datetime.now()
 detester = date.strftime(‘%Y-%m-%d')
 ```
 # string
+
 ## 数组转字符串
 
 ```python
@@ -100,6 +101,26 @@ print ",".join(arr)
 a = "abc"
 b = "bc"
 print b in a
+```
+
+## int转ip
+
+```python
+import socket
+import struct
+import sys
+data = int(sys.argv[1])
+ip = data >> 32
+ipstr = socket.inet_ntoa(struct.pack("!I", ip))
+token = ipstr.split('.')
+print ".".join(reversed(list(token)))
+```
+
+## 字符串逆序
+
+```python
+str = "abcde"
+print ".".join(reversed(list(str)))
 ```
 
 # logging
