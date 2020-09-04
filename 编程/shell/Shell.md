@@ -21,6 +21,7 @@ dmesg_with_human_timestamps () {
             printf( ($line=~/^\[\s*(\d+)\.\d+\](.+)/) ? ( "[%s]%s\n", scalar localtime(time - $uptime + $1), $2 ) : $line )
         }'
 }
+alias dmesg=dmesg_with_human_timestamps
 ```
 
 

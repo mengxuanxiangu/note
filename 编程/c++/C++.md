@@ -789,7 +789,7 @@ std::function<void(bool)> callable = [this, ctx](bool is_stop) {
 };
 ```
 
-## protobuf 
+## protobuf
 
 ### repeated Filed
 
@@ -812,3 +812,16 @@ repeated Bar foo = 1;
 - `void clear_foo()`: Removes all elements from the field. After calling this, `foo_size()` will return zero.
 - `const RepeatedPtrField<Bar>& foo() const`: Returns the underlying `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
 - `RepeatedPtrField<Bar>* mutable_foo()`: Returns a pointer to the underlying mutable `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
+
+## 打印异常时栈信息
+
+首先执行```gdb rp_check_worker_test```
+
+在gdb中执行 ```catch throw```
+
+然后执行```run ```, 此时开始执行单测
+
+当前出异常时执行```where```,此时可以看到栈信息
+
+![image-20200904161430769](../../../note/baidu/personal-code/houjinchao-note/img/image-20200904161430769.png)
+
