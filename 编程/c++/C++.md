@@ -823,5 +823,5 @@ repeated Bar foo = 1;
 
 当前出异常时执行```where```,此时可以看到栈信息
 
-![image-20200904161430769](../../../note/baidu/personal-code/houjinchao-note/img/image-20200904161430769.png)
+![image-20200904161430769](https://tva1.sinaimg.cn/large/007S8ZIlly1gihx2hqzcvj31gr0dxq9i.jpg)
 
