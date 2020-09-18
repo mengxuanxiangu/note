@@ -44,6 +44,8 @@ for i, v := range comPressTypeArr {
 	    "a": "aa",
 	    "b": "bb",
     }
+		//删除
+	 delete(m3, "a")
 // 注意：不能取 map 成员的地址
 ```
 #### 遍历
