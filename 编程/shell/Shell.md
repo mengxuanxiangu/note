@@ -6,6 +6,7 @@
 ### 远程执行脚本
 ``` bash
 pl mac 'bash -c "$(wget -q -O - 10.195.65.39:/tmp/do.sh)"'
+pl list 'bash -c "$(wget -q -O - http://houjinchao.bj.bcebos.com/do.sh)"' result 10 houjinchao
 ```
 ### 设置shell版本
 ``` bash
@@ -22,6 +23,12 @@ dmesg_with_human_timestamps () {
         }'
 }
 alias dmesg=dmesg_with_human_timestamps
+```
+
+### 坏盘检测
+
+```bash
+for i in `df -h|awk '{print $1}'|tr '/' ' '|awk '{print $2}'|tr -d '0-9'|sort|uniq`;do echo -ne $i" ";curl -s http://127.0.0.1:428/hdd/${i}/failure|grep GOOD|wc -l;done
 ```
 
 
