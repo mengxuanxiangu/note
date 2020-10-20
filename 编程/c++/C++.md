@@ -48,6 +48,11 @@ _rpc_channel_map.insert(std::make_pair(host, channel));
 for(auto &it : m){
   cout << it.first << "-" << it.second <<endl;
 }
+//删除
+auto it = _rpc_channel_map.find(host);
+if (it != _rpc_channel_map.end()) {
+		_rpc_channel_map.erase(it)
+}
 ```
 
 ### 数组
