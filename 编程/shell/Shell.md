@@ -166,7 +166,16 @@ cat aa|awk '{printf $0" "}'
 
     The amount of data in send queue.
 
+## http benchmark
+
+```sh
+ab -n 100000 -c 10000 http://10.228.2.35:8419/show
+# -n 测试总请求数
+# -c 并发
+```
+
 ## git
+
 ### 切换分支
 挑选分支
 ```bash
