@@ -608,6 +608,34 @@ int main(int argc, char argv[]) {
 }
 ```
 
+### stringstream
+
+```c++
+#include <iostream>
+#include <cstdlib>
+#include <sstream>
+
+int main()
+{
+    std::ostringstream stream;
+    stream << "msg1" << std::endl;
+    stream << "msg2" << std::endl;
+    std::cout << stream.str();
+    stream.str("");//clear stream
+    std::cout << "clear:" << stream.str() << std::endl;
+    std::cout << "end" << std::endl;
+}
+/*
+执行结果
+msg1
+msg2
+clear:
+end
+*/
+```
+
+
+
 ## 多线程
 
 ### 创建线程
