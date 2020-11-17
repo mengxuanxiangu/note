@@ -846,6 +846,21 @@ repeated Bar foo = 1;
 - `const RepeatedPtrField<Bar>& foo() const`: Returns the underlying `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
 - `RepeatedPtrField<Bar>* mutable_foo()`: Returns a pointer to the underlying mutable `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
 
+## gflag
+
+### 判断一个FLAG是否被设置
+
+```c++
+google::CommandLineFlagInfo info;
+if (GetCommandLineFlagInfo("portno", &info) && info.is_default) {
+  std::cout << "port is not set." << std::endl;
+} else {
+  std::cout << "port is set." << std::endl;
+}
+//注意这里不是简单比较flag值是否与默认值相同，如果设置了flag=默认值，也会输出”port is set”。
+//使用google::GetCommandLineOption()访问string类型的gflag，直接访问是线程不安全的。
+```
+
 ## GDB
 
 ### 打印异常时栈信息
