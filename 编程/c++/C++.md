@@ -442,6 +442,12 @@ void cal_md5(char* query) {
     MD5_Init(&ctx);
     MD5_Update(&ctx, query, strlen(query));
     MD5_Final(md, &ctx);
+    std::stringstream md5_key_ss;
+    md5_key_ss << std::hex << std::setfill('0');
+    for (long long c : md5_key) {
+      md5_key_ss << std::setw(2) << c;
+    }
+  	std::string md5_str = md5_key_ss.str();
 }
 ```
 
