@@ -472,6 +472,22 @@ int main(int argc, char* argv[]) {
 }
 ```
 
+### 判断一个FLAG是否被设置
+
+```c++
+//方法1
+google::CommandLineFlagInfo info;
+if (GetCommandLineFlagInfo("portno", &info) && info.is_default) {
+  std::cout << "port is not set." << std::endl;
+} else {
+  std::cout << "port is set." << std::endl;
+}
+//方法2
+google::GetCommandLineFlagInfoOrDie("permit_rule_balance").is_default
+//注意这里不是简单比较flag值是否与默认值相同，如果设置了flag=默认值，也会输出”port is set”。
+//使用google::GetCommandLineOption()访问string类型的gflag，直接访问是线程不安全的。
+```
+
 ## 锁
 
 ### lock_guard 与unique_lock 区别
@@ -504,7 +520,7 @@ void shared_print(string msg, int id) {
 ```c++
 #include <iostream>
 #include <mutex>  // 对于 std::unique_lock
-#include <shared_mutex>
+#include <shared_mutex> //c++ 17
 #include <thread>
  
 class ThreadSafeCounter {
@@ -851,21 +867,6 @@ repeated Bar foo = 1;
 - `void clear_foo()`: Removes all elements from the field. After calling this, `foo_size()` will return zero.
 - `const RepeatedPtrField<Bar>& foo() const`: Returns the underlying `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
 - `RepeatedPtrField<Bar>* mutable_foo()`: Returns a pointer to the underlying mutable `RepeatedPtrField` that stores the field's elements. This container class provides STL-like iterators and other methods.
-
-## gflag
-
-### 判断一个FLAG是否被设置
-
-```c++
-google::CommandLineFlagInfo info;
-if (GetCommandLineFlagInfo("portno", &info) && info.is_default) {
-  std::cout << "port is not set." << std::endl;
-} else {
-  std::cout << "port is set." << std::endl;
-}
-//注意这里不是简单比较flag值是否与默认值相同，如果设置了flag=默认值，也会输出”port is set”。
-//使用google::GetCommandLineOption()访问string类型的gflag，直接访问是线程不安全的。
-```
 
 ## GDB
 
