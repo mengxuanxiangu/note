@@ -267,6 +267,8 @@ cat /proc/interrupts | grep eth0
 ```bash
 /usr/local/sbin/ethtool eth1
 ```
+
+
 ![1143db8f31a8398b0e3b0ff18b2462fc](../../img/1C01F390-A0D2-4B4C-B04C-64C4E5CF51B4.png)
 
 ## ulimit
