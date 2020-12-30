@@ -53,6 +53,36 @@ auto it = _rpc_channel_map.find(host);
 if (it != _rpc_channel_map.end()) {
 		_rpc_channel_map.erase(it)
 }
+
+//复制
+int main()
+{
+    std::unordered_map<int, int> src_map;
+    for (int i = 0; i < 10; i++) {
+        src_map[i] = i;
+    }
+    std::unordered_map<int, int> dest_map = src_map;
+    
+    for (int i = 0; i < 10; i++) {
+        src_map[i] = 10 - i;
+    }
+    
+    for (auto it : dest_map) {
+        std::cout << "key:" << it.first << " value:" << it.second << std::endl;
+    }
+}
+/* 运行结果
+key:9 value:9
+key:8 value:8
+key:7 value:7
+key:6 value:6
+key:1 value:1
+key:0 value:0
+key:2 value:2
+key:3 value:3
+key:4 value:4
+key:5 value:5
+*/
 ```
 
 ### 数组
