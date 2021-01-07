@@ -912,3 +912,8 @@ repeated Bar foo = 1;
 
 ![image-20200904161430769](https://tva1.sinaimg.cn/large/007S8ZIlly1gihx2hqzcvj31gr0dxq9i.jpg)
 
+## 性能
+
+###内存申请+COPY开销
+
+![image-20210107201110710](https://tva1.sinaimg.cn/large/008eGmZEly1gmfe3kf78dj316x0g84j9.jpg)
