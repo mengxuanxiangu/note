@@ -177,6 +177,7 @@ ab -n 100000 -c 10000 http://10.228.2.35:8419/show
 ## git
 
 ### 切换分支
+
 挑选分支
 ```bash
 git branch -a
@@ -214,12 +215,21 @@ git commit --amend
 git diff --staged
 ```
 ### 把自己的改动置于顶端
+
 ```bash
 git pull --rebase
 ```
 
+### 回滚
+
+```bash
+git revert 49283789
+```
+
+
 
 ## Shell中的${}、##和%%使用范例
+
 ```
 file=/dir1/dir2/dir3/my.file.txt
 可以用${ }分别替换得到不同的值：
