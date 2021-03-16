@@ -3,7 +3,7 @@
 [TOC]
 ## 小技巧
 
-### 远程执行脚本
+### 远程执行脚本录
 ``` bash
 pl mac 'bash -c "$(wget -q -O - 10.195.65.39:/tmp/do.sh)"'
 pl list 'bash -c "$(wget -q -O - http://houjinchao.bj.bcebos.com/do.sh)"' result 10 houjinchao
