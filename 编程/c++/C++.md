@@ -931,3 +931,31 @@ repeated Bar foo = 1;
 ###内存申请+COPY开销
 
 ![image-20210107201110710](https://tva1.sinaimg.cn/large/008eGmZEly1gmfe3kf78dj316x0g84j9.jpg)
+
+## 正则表达式
+
+### 提取字符串
+
+```c++
+#include <iostream>
+#include <regex>
+#include <string>
+
+int main()
+{
+    std::cout << "Hello, Wandbox!" << std::endl;
+    std::string key_str = "--vlet_type=11 if not set, use default value 11";
+    std::regex reg(".*--(.*)=.*");
+    std::smatch match_result;
+    if (std::regex_search(key_str, match_result, reg)) {
+        for (int i = 0 ; i < match_result.size(); i++)  {
+            std::cout << match_result[i] << std::endl;
+        }
+    }
+}
+/*输出
+--vlet_type=11 if not set, use default value 11
+vlet_type
+*/
+```
+
