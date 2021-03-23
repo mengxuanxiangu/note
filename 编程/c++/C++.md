@@ -671,6 +671,11 @@ int main(int argc, char argv[]) {
     std::string cache_value = "";
     std::getline(in, cache_value);
     std::cout << "read size:" << cache_value.size() << std::endl;
+  
+   //另一种方法
+    std::ifstream t("file.txt");
+    std::stringstream buffer;
+    buffer << t.rdbuf();
 }
 ```
 
