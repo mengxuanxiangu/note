@@ -964,3 +964,18 @@ vlet_type
 */
 ```
 
+## jsoncpp
+
+### json 转字符串
+
+```c++
+Json::Value root;
+...//root中写入数据
+
+//方法一:转为格式化字符串，里面加了很多空格及换行符
+string strJson1 = root.toStyledString();
+//方法二:转为未格式化字符串,无多余空格及换行符
+Json::FastWriter writer;
+string strJson1 = writer.write(root);
+```
+
