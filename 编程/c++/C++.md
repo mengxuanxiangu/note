@@ -669,9 +669,10 @@ int main(int argc, char argv[]) {
     out << "hello world" << std::endl;
     std::ifstream in("./cache_data");
     std::string cache_value = "";
-    std::getline(in, cache_value);
-    std::cout << "read size:" << cache_value.size() << std::endl;
-  
+  	for (std::string line; std::getline(in, line); ) {
+      	std::cout << "read size:" << line.size() << std::endl;
+    }
+     
    //另一种方法
     std::ifstream t("file.txt");
     std::stringstream buffer;
@@ -977,5 +978,33 @@ string strJson1 = root.toStyledString();
 //方法二:转为未格式化字符串,无多余空格及换行符
 Json::FastWriter writer;
 string strJson1 = writer.write(root);
+```
+
+### 字符串转json
+
+```c++
+std::string strJson = R"({"foo": "bar"})";
+
+Json::CharReaderBuilder builder;
+Json::CharReader* reader = builder.newCharReader();
+
+Json::Value json;
+std::string errors;
+
+bool parsingSuccessful = reader->parse(
+    strJson.c_str(),
+    strJson.c_str() + strJson.size(),
+    &json,
+    &errors
+);
+delete reader;
+
+if (!parsingSuccessful) {
+    std::cout << "Failed to parse the JSON, errors:" << std::endl;
+    std::cout << errors << std::endl;
+    return;
+}
+
+std::cout << json.get("foo", "default value").asString() << std::endl;
 ```
 
