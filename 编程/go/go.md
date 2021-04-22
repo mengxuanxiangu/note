@@ -78,6 +78,53 @@ for index := 0; index < len(arr); index++ {
   }
 ```
 
+#### map range 性能
+
+```go
+package main
+
+import (
+        "fmt"
+        "strconv"
+        "time"
+)
+
+func main() {
+        dataMap := make(map[string]interface{})
+        for i := 0; i < 10000; i++ {
+                dataMap[strconv.Itoa(i)] = i
+        }
+        start := time.Now()
+        for range dataMap {
+        }
+        fmt.Printf("10000 range map cost:%v\n", time.Since(start))
+        dataMap = make(map[string]interface{})
+        for i := 0; i < 100000; i++ {
+                dataMap[strconv.Itoa(i)] = i
+        }
+        start = time.Now()
+        for range dataMap {
+        }
+        fmt.Printf("100000 range map cost:%v\n", time.Since(start))
+        dataMap = make(map[string]interface{})
+        for i := 0; i < 1000000; i++ {
+                dataMap[strconv.Itoa(i)] = i
+        }
+        start = time.Now()
+        for range dataMap {
+        }
+        fmt.Printf("1000000 range map cost:%v\n", time.Since(start))
+}
+
+/* result
+10000 range map cost:175.848µs
+100000 range map cost:1.750599ms
+1000000 range map cost:22.700171ms
+*/
+```
+
+
+
 ### 引用
 
 #### 引用类型
