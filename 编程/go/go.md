@@ -134,13 +134,53 @@ go 中五种引用类型有 slice， channel， function， map， interface
 ### channel
 
 #### 定义
+
 [link](http://colobu.com/2016/04/14/Golang-Channels/)
 ```go
 aa := make(chan int) //无缓冲区
 bb := make(chan int, 100) //带缓冲区
 ```
 
+#### 作为stop信号
+
+```go
+func routine(done chan bool) {
+
+    LISTEN_LOOP:
+    for {
+        select {
+        case <-done: //select close chan will hit
+                break LISTEN_LOOP // break 到哪一层循环
+        default:
+        }
+        fmt.Println("run once")
+        time.Sleep(1* time.Second)
+    }
+    fmt.Println("done")
+}
+
+func main() {
+    done := make(chan bool)
+    go routine(done)
+    time.Sleep(5*time.Second)
+    close(done)
+    time.Sleep(5*time.Second)
+}
+
+/***
+run once
+run once
+run once
+run once
+run once
+done
+***/
+```
+
+
+
 ### 循环
+
 #### for
 ```go
 package main
