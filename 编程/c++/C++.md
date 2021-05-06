@@ -920,6 +920,18 @@ repeated Bar foo = 1;
 
 ## GDB
 
+### 切换thread
+
+```thread n```
+
+### 打印所有thread
+
+```thread apply all bt```
+
+### 运行中进程吐core
+
+```gcore $pid``` 
+
 ### 打印异常时栈信息
 
 首先执行```gdb rp_check_worker_test```
