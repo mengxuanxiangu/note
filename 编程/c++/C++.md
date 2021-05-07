@@ -465,10 +465,27 @@ typedef register int FAST_COUNTER; // 错误
 ## rand
 
 ### srand()为非线程安全函数
+
 ```c++
+//正确方法
+#include <cstdlib>
 #include <iostream>
-int main(int argc, char* argv){
-    std::cout << "hello world" << std::endl;
+#include <ctime>
+ 
+int main() 
+{
+    std::srand(std::time(nullptr)); // use current time as seed for random generator
+    int random_variable = std::rand();
+    std::cout << "Random value on [0 " << RAND_MAX << "]: " 
+              << random_variable << '\n';
+ 
+    // roll 6-sided dice 20 times
+    for (int n=0; n != 20; ++n) {
+        int x = 7;
+        while(x > 6) 
+            x = 1 + std::rand()/((RAND_MAX + 1u)/6);  // Note: 1+rand()%6 is biased
+        std::cout << x << ' ';
+    }
 }
 ```
 
@@ -1020,3 +1037,32 @@ if (!parsingSuccessful) {
 std::cout << json.get("foo", "default value").asString() << std::endl;
 ```
 
+## std::function
+
+### 成员函数作回调
+
+```c++
+#include <iostream>
+#include <functional>
+
+class Test {
+public:
+   void doing(int* data) {
+       _data = *data;
+   }
+   int _data = 0;
+};
+
+int main()
+{
+    Test test_one;
+    std::function<void(int*)> doing = std::bind(&Test::doing, &test_one, std::placeholders::_1);
+    int value = 100;
+    if (doing) {
+        doing(&value);
+    }
+    std::cout << test_one._data << std::endl;
+}
+//output
+100
+```
