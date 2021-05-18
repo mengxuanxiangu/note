@@ -941,9 +941,24 @@ repeated Bar foo = 1;
 
 ```thread n```
 
-### 打印所有thread
+### 打印所有thread， 输出至文件
 
 ```thread apply all bt```
+
+```bash
+set logging file mylog.txt
+set logging on
+thread apply all bt
+set logging off
+```
+
+### 远程打印所有的thread
+
+```bash
+/opt/compiler/gcc-8.2/bin/gdb -q --batch --ex "set height 0" --ex "thread apply all bt" ./bin/datanode ./core.1234
+```
+
+
 
 ### 运行中进程吐core
 
