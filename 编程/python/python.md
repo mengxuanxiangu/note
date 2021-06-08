@@ -169,3 +169,32 @@ with open(data_file, 'r') as f:
     lines = f.readlines()
 ```
 
+## 画图
+
+```python
+# !/usr/bin/env python
+# -*- coding:utf-8 -*-
+import time
+
+import matplotlib.pyplot as plt
+import requests
+import json
+
+ax = []                    
+ay = []                    
+plt.ion()                  
+while True:
+    # import pdb;pdb.set_trace()
+    resp = requests.get("http://bjyz-bos00-r07-01-003.bjyz.baidu.com:8123/FrequencyService/info?key=3b5bd1565a1f456e9d9f0b400389765f")
+    now = int(time.time())
+    dic = json.loads(resp.text)
+    ax.append(now)
+    ay.append(dic["info"]["download"])
+    plt.clf()              
+    plt.plot(ax,ay)        
+    plt.pause(0.1)         
+    plt.ioff()             
+    time.sleep(1)
+    
+```
+
