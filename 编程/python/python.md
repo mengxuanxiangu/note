@@ -185,7 +185,7 @@ ay = []
 plt.ion()                  
 while True:
     # import pdb;pdb.set_trace()
-    resp = requests.get("http://bjyz-bos00-r07-01-003.bjyz.baidu.com:8123/FrequencyService/info?key=3b5bd1565a1f456e9d9f0b400389765f")
+    resp = requests.get("http://xx/FrequencyService/info?key=3b5bd1565a1f456e9d9f0b400389765f")
     now = int(time.time())
     dic = json.loads(resp.text)
     ax.append(now)
