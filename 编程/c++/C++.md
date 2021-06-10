@@ -1081,3 +1081,16 @@ int main()
 //output
 100
 ```
+
+## 控制小数位数
+
+```c++
+#include <iomanip>
+#include <iostream>
+
+double test = 1.2345
+std::cout << std::setprecision(4) << test << std::endl;
+//output
+1.234
+```
+
