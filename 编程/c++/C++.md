@@ -982,6 +982,22 @@ set logging off
 
 ![image-20210107201110710](https://tva1.sinaimg.cn/large/008eGmZEly1gmfe3kf78dj316x0g84j9.jpg)
 
+### 计算函数耗时
+
+```c++
+#include <chrono>
+#include <ctime>
+
+auto t_start = std::chrono::high_resolution_clock::now();
+for (int i = 0; i < 10000; i++) {
+  list_a.pop_front();
+}
+auto t_end = std::chrono::high_resolution_clock::now();
+std::cout << "1w cost: " << std::chrono::duration<double, std::micro>(t_end-t_start).count() << " us" << std::endl;
+```
+
+
+
 ## 正则表达式
 
 ### 提取字符串
