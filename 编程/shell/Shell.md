@@ -344,3 +344,16 @@ rsync -av src dest --delete
 #--delete-after 传输结束以后再删除
 ```
 
+## 磁盘
+
+### journal 
+
+```bash
+## 查看是否打开日志
+dumpe2fs /dev/sdb1 | grep 'Filesystem features' | grep 'has_journal'
+## 关闭日志
+tune2fs -O ^has_journal /dev/sdb1
+## 打开日志
+tune2fs -O has_journal /dev/sdb1
+```
+
