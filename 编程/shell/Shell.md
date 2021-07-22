@@ -347,7 +347,7 @@ rsync -av src dest --delete
 
 ## 磁盘
 
-### journal 
+### journal
 
 ```bash
 ## 查看是否打开日志
@@ -357,4 +357,15 @@ tune2fs -O ^has_journal /dev/sdb1
 ## 打开日志
 tune2fs -O has_journal /dev/sdb1
 ```
+
+### 挂载tmpfs
+
+```bash
+ mkdir -p /influxdb/tmpfs
+ mount tmpfs /influxdb/tmpfs -t tmpfs -o size=30G
+ #/etc/fstab
+ tmpfs /influxdb/tmpfs tmpfs defaults,size=30G 0 0
+```
+
+
 
