@@ -1030,6 +1030,7 @@ type Span struct {
 其中-语义为，该字段不输出
 
 ### 序列化与反序列化
+
 ```go
 package main
 
